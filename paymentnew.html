@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Jiwok</title>
+<link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
+
+<!-- Internet Explorer HTML5 enabling code: -->
+<!--[if IE]>
+           <script src="js/html5.js"></script>
+
+<![endif]-->
+
+<link href="resources/style.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="resources/jquery.pwstabs-1.2.1.css">
+
+<link href="resources/style_dev.css" rel="stylesheet" type="text/css">
+		<link href="css/main.css" rel="stylesheet">
+        <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="js/tabber.js"></script>
+         
+   <script>
+equalheight = function(container){
+
+var currentTallest = 0,
+     currentRowStart = 0,
+     rowDivs = new Array(),
+     $el,
+     topPosition = 0;
+ $(container).each(function() {
+
+   $el = $(this);
+   $($el).height('auto')
+   topPostion = $el.position().top;
+
+   if (currentRowStart != topPostion) {
+     for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+       rowDivs[currentDiv].height(currentTallest);
+     }
+     rowDivs.length = 0; // empty the array
+     currentRowStart = topPostion;
+     currentTallest = $el.height();
+     rowDivs.push($el);
+   } else {
+     rowDivs.push($el);
+     currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+  }
+   for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+     rowDivs[currentDiv].height(currentTallest);
+   }
+ });
+}
+
+$(window).load(function() {
+	
+  equalheight('.JI_training-2 ul.team li');
+});
+$(window).resize(function(){
+  equalheight('.JI_training-2 ul.team li');
+});
+</script>
+
+<!---------------------------->
+</head>
+<body>
+<header>
+  <div class="frame">
+  <h1 class="logo">
+     <a href="index.html"><img src="images/logo.png" alt="Jiwok" title="Jiwok"></a>
+  </h1>
+  
+  
+  </div>
+</header>
+
+    
+    
+    <div class="top-nav">
+        <nav class="nav">    
+					<ul class="nav-list">
+						<li class="nav-item"><a href="?=home">ACCUEIL</a></li>
+						<li class="nav-item"><a href="?=home">VOTRE ENTRAINEMENT SUR MESURE</a></li>
+                        <li class="nav-item"><a href="?=home">LES COACHS</a></li>
+                        <li class="nav-item"><a href="?=home">BLOG</a></li>
+                        <li class="nav-item"><a href="?=home">FORUM</a></li>
+                        <li class="nav-item"><a href="?=home">CONTACT</a></li>
+                        <li class="nav-item"><a href="?=home">AIDE</a></li>
+					</ul>
+				</nav>
+     </div>
+      <section class="payment-new">
+          
+         
+     <div class="payment-wrapper">
+         <div class="breadcrumbs">
+    <ul>
+        <li>Vous êtes ici :</li>
+        <li><a href="http://10.0.0.8/jiwokv3index.php">Mon compte</a></li>
+        <li>&gt;</li>
+        <li><a href="#" class="select">Paiement</a> </li>
+</ul>
+
+</div>
+   <div class="heading2">
+
+
+    <span class="name"><a href="http://www.jiwok.com/blog/">Choisissez votre Pass Jiwok </a></span>
+</div>
+
+
+<div class="left">
+    <div class="twelve-pass">
+        <div class="pass12">
+            <ul>
+                <li>
+                    <form>
+                        <input type="radio" name="ffg"> </form>
+                </li>
+                <li>
+                    <h2>Pass 12 mois: <span class="d-price">4.90</span> €/mois</h2> au lieu de 9.90€
+                    <br> Facturé en un paiement de 59.90 € </li>
+            </ul>
+        </div>
+        <div class="round-offer-left">
+            <h2>-50%</h2>
+            <span>sur le plein <br>
+tarif </span>
+        </div>
+    </div>
+    
+    
+    
+    
+    <div class="pass-dtls">
+    <div class="pass-secction">
+        <ul>
+            <li>
+                <form>
+                    <input type="radio" name="ffg"> </form>
+            </li>
+            <li>
+                <h2>Pass 6 mois: 5.80 €/mois </h2> au lieu de 9.90€
+                <br> Facturé en un paiement de 59.90 €
+            </li>
+        </ul>
+    </div>
+    <div class="round-offer-pass">
+        <h2>-40%</h2>
+        <span>sur le plein <br>
+tarif </span>
+    </div>
+</div>
+    
+   
+    <div class="pass-dtls">
+    <div class="pass-secction">
+        <ul>
+            <li>
+                <form>
+                    <input type="radio" name="ffg"> </form>
+            </li>
+            <li>
+                <h2>Pass 3 mois: 6.63 €/mois </h2>au lieu de 9.90€
+                <br> Facturé en un paiement de 59.90 € 
+            </li>
+        </ul>
+    </div>
+    <div class="round-offer-pass">
+        <h2>-33%</h2>
+        <span>sur le plein <br>
+tarif </span>
+    </div>
+</div>
+    
+    <div class="left-btm">
+        <h2>Pass 1 mois (Plein tarif): 9.99 €/mois</h2>
+    </div>
+    <div class="pre-next">
+    <span style="float:left; color:#ff4100">> Avez vous un code promo?</span>
+        <span style="padding-left:110px; color:#40b4e7">> Condition de l’offre</span>
+    </div>
+    <div class="service-inclus">
+        <h2>Les services inclus</h2>
+    <ul>
+        <li>Vos programmes d'entraînements personnels en musique</li>
+        <li>Un coach sportif professionel qui élabore votre programme 
+personnel</li>
+        <li>Des séances d'entraînements pour votre niveau, que vous 
+soyez débutant, confirmé ou expert
+</li>
+        <li>Des outils pour votre accompagnement et suivi personnel + 2 
+livrets sur l'entraînement et la nutrition </li>
+ 
+        </ul>
+    </div>
+    
+
+</div>
+         
+         
+         
+         
+         
+         
+          <div class="right">
+    <div class="right-info-bg">
+        <h2>Informations bancaires</h2>
+        <div class="account">
+            <div class="lock-info">
+                <img src="images/lock-info.png" alt="" />
+            </div>
+            <div class="security-info">
+                <h2>Paiement 100% sécurisé</h2>
+            </div>
+<div class="payment-gateway">
+    <img src="images/transction.png" alt="" />
+    <ul>
+    <li><img src="images/visa-payment.png" alt="" /></li>
+        <li><img src="images/ce-payment.png" alt="" /></li>
+        <li><img src="images/mastercard.png" alt="" /> </li>
+    </ul>
+            </div>
+        </div>
+        
+        <div class="info-btn">
+           <h2>Payez maintenant ></h2>
+        </div>
+       </div>
+              <div class="right-login-sec">
+                  <h2>Pensez à utiliser nos cartes ou bons cadeaux</h2>
+                  <div class="right-acc-login">
+              <div class="log-sec">
+                  <img src="images/login-card.png" alt="" />
+                  
+                  </div>
+                  <div class="log-form">
+                      
+                      
+                      <form >
+First name:  <input type="text" name="first_name" />
+<br>
+Last name:  <input type="text" name="last_name" />
+</form>
+<!--
+                 <form>
+                     <div >
+                      <labe>J-Code Help</labe>
+                         <input type="text" name="" /></div>
+                           <div>
+                               <labe>16 chiffres sous code barre Help</labe>
+                         <input type="text" name="" />
+                      
+                   
+                     
+                      </div>
+                      </form>
+-->
+                  
+                  </div>
+                      </div>
+                  <div class="right-login-btn">
+                      <h2>Valider ma commande</h2>
+              </div> 
+              
+              </div>
+              <div class="right_desc">
+              
+              <h3>A propos de votre abonnement Jiwok:</h3>
+                  <p>Pour éviter toute discontinuité de votre pass, votre abonnement Jiwok sera renouvelé automatiquement sur une période équivalente à celle initialement souscrite. Vous pouvez bien sûr annuler le renouvellement automatique de votre abonnement à tout moment à partir de la page "Mon compte". </p>
+              </div>
+              
+             
+              
+
+</div>
+         
+         
+         
+          
+          
+          </div>
+      </section>
+    
+     
+		
+</body>
+</html>

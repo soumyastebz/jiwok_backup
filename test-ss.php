@@ -1,0 +1,1 @@
+<?php$dep = " 12,3,4,,5,6,7,,8,9,";$n = preg_replace('/,+/', ',', $dep);//$dep = count_chars($dep,3);//$uniqueDep = implode(',', array_unique(explode(',', $dep)));echo $n;?>

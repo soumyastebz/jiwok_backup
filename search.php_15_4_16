@@ -1,0 +1,469 @@
+<?php
+//error_reporting(E_ALL);
+//ini_set("display_errors",1);
+session_start();
+//session_destroy();
+//echo "<pre/>";print_r($_SESSION);exit;
+include_once('includeconfig.php');
+include_once("includes/classes/class.programs.php");
+include_once("includes/classes/class.homepage.php");
+include_once "includes/classes/class.Search.php";
+include_once('includes/classes/class.newParser.php');
+/*ini_set('display_errors',1);
+error_reporting(E_ERROR | E_PARSE);*/
+unset($_SESSION['search_val']);
+unset($_SESSION['val_goal']);
+unset($_SESSION['val_level']);
+unset($_SESSION['val_sport']);
+unset($_SESSION['val_session']);
+
+	if($lanId=="")	 $lanId=1;
+	$xmlSearch		= new newParser();
+	$objGen     	= new General();
+	$objTraining	= new Programs($lanId);
+	$parObj 		= new Contents('search.php');
+	$objHome     	= new Homepage($lanId);
+	$searchObj      = new Search();
+	//collecting data from the xml for the static contents
+	$returnData		= $parObj->_getTagcontents($xmlPath,'listprograms','label');
+	//echo "<pre>";
+	//print_r($returnData);//exit;
+	$arrayData		= $returnData['general'];
+	//print_r($arrayData);exit;
+	//get page title
+	$page_title		= '';
+	
+	//collecting All training program category for displaying
+	
+	$wizard_goals	= $searchObj->getWizardGoals($lanId);
+	//collecting data from the xml for the static contents for wizard
+	$returnData		= $parObj->_getTagcontents($xmlPath,'searchWizard','label');
+	$arrayDataWiz	= $returnData['general'];
+	//echo "<pre>";
+	//print_r($arrayDataWiz);exit;
+	$wizard_levels	= $searchObj->getLevels($lanId);
+	
+	//echo "<pre>";
+	//print_r($wizard_levels);exit;
+	//exit;
+	array_walk_recursive($wizard_levels, array($searchObj, '_utf8encode'));
+    $wizard_rythms   = $searchObj->getWizardRythms($lanId);
+	array_walk_recursive($wizard_rythms, array($searchObj, '_utf8encode'));
+   
+	$wizard_sports   = $searchObj->getWizardSports($lanId);
+	
+	array_walk_recursive($wizard_rythms, array($searchObj, '_utf8encode'));	
+	// for service background section
+	$getHomeId	=	0;
+	if(isset($_SESSION['home']['HomeId']))
+			$getHomeId			=	$_SESSION['home']['HomeId'];
+	else		
+			$_SESSION['home']['HomeId']	=	$getHomeId;
+		
+	if($getHomeId <> 0){
+			$getHomeContent		=	$objHome->_displayHomeContent($getHomeId,$lanId);
+			$bgImage			=	"./uploads/homepage/".$getHomeContent[0]['wizard_image'];;
+		}
+	if($getHomeId == 0){
+			$bgImage			=	"images/t_wizard.png";
+		}
+	
+$cur_day 			= date('l');
+$cur_month 			= date('F');
+$cur_date 			= date('j.S');
+$cur_year 			= date('Y');
+$date_subscript 	= explode('.',$cur_date);
+if($lanId==5)
+{
+	$dayArray = array('Sunday'=>'Niedziela','Monday'=>'Poniedzia&#322;ek','Tuesday'=>'Wtorek','Wednesday'=>'&#346;roda','Thursday'=>'Czwartek ','Friday'=>'Pi&#261;tek','Saturday'=>'Sobota');
+	$monthArray  = array('January'=>'Stycze&#324;','February'=>'Luty','March'=>'Marzec','April'=>'Kwiecie&#324;','May'=>'Maj','June'=>'Czerwiec','July'=>'Lipiec','August'=>'Sierpie&#324;','September'=>'Wrzesie&#324;','October'=>'Pa&#378;dziernik','November'=>'Listopad','December'=>'Grudzie&#324;');	
+}
+
+if($lanId==1)
+	{
+		$cur_day = $cur_day;
+	}
+else
+	{
+		$cur_day = $dayArray[$cur_day];
+	}
+if($lanId==1)
+	{
+		$cur_month = $cur_month;
+	 	$subscrpt = trim($date_subscript[1]);
+	}
+else
+	{
+		$cur_month = $monthArray[$cur_month];
+	}
+include_once('search_redirect.php');
+
+include_once("header.php");?> 
+<!--<link href="resources/style.css" rel="stylesheet" type="text/css" />
+
+		<link href="css/main.css" rel="stylesheet">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+<script type="text/javascript">
+$(document).ready(function(){
+
+	window.jpopup = '';
+	
+	$('#mypop').click(function(){
+		jpopup.close();
+		});
+	
+	});
+
+ function showhide(ctrl)
+ 	{	
+		$("#"+ctrl).slideToggle();
+	}
+
+equalheight = function(container){
+
+var currentTallest = 0,
+     currentRowStart = 0,
+     rowDivs = new Array(),
+     $el,
+     topPosition = 0;
+ $(container).each(function() {
+
+   $el = $(this);
+   $($el).height('auto')
+   topPostion = $el.position().top;
+
+   if (currentRowStart != topPostion) {
+     for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+       rowDivs[currentDiv].height(currentTallest);
+     }
+     rowDivs.length = 0; // empty the array
+     currentRowStart = topPostion;
+     currentTallest = $el.height();
+     rowDivs.push($el);
+   } else {
+     rowDivs.push($el);
+     currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+  }
+   for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+     rowDivs[currentDiv].height(currentTallest);
+   }
+ });
+}
+
+$(window).load(function() {
+	
+  equalheight('.top_10 ul li');
+});
+$(window).resize(function(){
+  equalheight('.top_10 ul li');
+});
+
+function validateSearch()
+{
+	var goal			=	document.getElementById('user_goal').value;
+	var level			=	document.getElementById('user_level').value;
+	var lang			=	document.getElementById('langfield').value;
+	var cont_goal		=	document.getElementById('cont_goal').value;
+	var cont_level		=	document.getElementById('cont_level').value;
+	
+	if(lang	==	1)
+	{
+		var cont_session	=	document.getElementById('cont_session').value;
+		var session	=	document.getElementById('user_no_session').value;
+	}
+	else
+	{
+		var cont_sport		=	document.getElementById('cont_sport').value;
+		var sport	=	document.getElementById('user_sport').value;
+	}
+	if(goal	==	""	&&	level	==	""	&&	sport	==	"")
+	{
+		//var $j = jQuery.noConflict();
+		
+		document.getElementById('alertMsgSearch').innerHTML="<?=$parObj->_getLabenames($arrayDataWiz,'search_empty','name');?>";
+			
+             jpopup =  $('.pop_search').bPopup({	       
+            speed: 2000,
+            transition: 'slideDown'
+        });
+            
+		return false;
+	}
+	else if(goal	==	""	&&	level	==	""	&&	session	==	"")
+	{
+		document.getElementById('alertMsgSearch').innerHTML="<?=$parObj->_getLabenames($arrayDataWiz,'search_empty','name');?>";
+		
+              jpopup = $('.pop_search').bPopup({	     
+            speed: 2000,
+            transition: 'slideDown'
+        });
+            
+		return false;
+	}
+}
+function assignchoice()
+{
+	
+			var lang	=	document.getElementById('langfield').value;
+			if(document.getElementById('user_goal').value != ""){
+			var text_goal			=	document.getElementById('user_goal').options[document.getElementById('user_goal').selectedIndex].text;
+			text_goal				=	text_goal.split(' ').join('-');
+			$('#cont_goal').attr("value",text_goal);
+		}
+		else{
+			var text_goal			=	"";
+			$('#cont_goal').attr("value",text_goal);
+		}
+		if(document.getElementById('user_level').value != ""){
+			var text_level			=	document.getElementById('user_level').options[document.getElementById('user_level').selectedIndex].text;
+			text_level				=	text_level.split(' ').join('-');
+			$('#cont_level').attr("value",text_level);
+		}
+		else{
+			var text_level			=	"";
+			$('#cont_level').attr("value",text_level);
+		}
+		
+		if(lang	==	1){
+			if(document.getElementById('user_no_session').value != ""){
+				var text_session	=	document.getElementById('user_no_session').options[document.getElementById('user_no_session').selectedIndex].text;
+				$('#cont_session').attr("value",text_session);
+			}
+			else{
+				var text_session	=	"";
+				text_session		=	text_session.split(' ').join('-');
+				$('#cont_session').attr("value",text_session);
+			}
+		}
+		else{
+			if(document.getElementById('user_sport').value != ""){
+				var text_sport		=	document.getElementById('user_sport').options[document.getElementById('user_sport').selectedIndex].text;
+				//alert(text_sport);exit;
+				$('#cont_sport').attr("value",text_sport);
+			}
+			else{
+				var text_sport		=	"";
+				text_sport			=	text_sport.split(' ').join('-');
+				$('#cont_sport').attr("value",text_sport);
+			}
+		}
+}
+
+
+   
+   
+</script>
+<!---------------------------->
+ <!--for search error popup -->  
+ 
+ <section class="pop_search"> <!--<img src="images/close.png" alt="close" class="close b-modal __b-popup1__">-->
+          <div class="popbox_search">
+           
+          <h3><div id="alertMsgSearch"></div></h3><br /><br />
+           <div align="center"><input type="submit" id="mypop" class="btn_pop ease" value="VALIDER" ></div></div>
+          
+          </section> 
+ <!--====================newwwwwwwwwwwwwww-->
+<!--for search error popup-->
+		<!---Adding microdata--------->
+		<script type="application/ld+json">
+		  {
+		  "@context": "http://schema.org",
+		  "@type": "BreadcrumbList",
+		  "itemListElement": [{
+			"@type": "ListItem",
+			"position": 1,
+			"item": {
+			  "@id": "<?=ROOT_JWPATH?>index.php",
+			  "name": "<?=strtoupper($parObj->_getLabenames($arrayDataWiz,'homeName','name'));?>"
+			}
+		  },{
+			"@type": "ListItem",
+			"position": 2,
+			"item": {
+			  "@id": "#",
+			  "name": "<?=strtoupper($parObj->_getLabenames($arrayDataWiz,'searchName','name'));?>"
+			}
+		  }]
+		}
+		</script>
+       <section class="banner-static bannerH bnr-mrgn">
+      <div class="bred-hovr second">
+          <ul class="bredcrumbs">
+               <li><?=mb_strtoupper(($parObj->_getLabenames($arrayDataWiz,'searchPath','name')),'UTF-8');?><a href="<?=ROOT_JWPATH?>index.php">
+          <?=strtoupper($parObj->_getLabenames($arrayDataWiz,'homeName','name'));?>
+          </a></li>
+               <li>&gt;</li>
+               <li><a href="#"><?=strtoupper($parObj->_getLabenames($arrayDataWiz,'searchName','name'));?></a></li>
+            </ul>
+       </div>
+           <div class="bnr-image"><img src="<?=ROOT_FOLDER?>images/banner_02.jpg" alt="jiwok"></div>
+           <div class="bnr-content enter-sec">
+                <div class="inner">
+                  <div class="heading"><h1><?=$parObj->_getLabenames($arrayData,'searchheading1','name');?></h1></div> 
+                  <div class="line"><p>&nbsp;</p></div>
+                  <p class="heading2"><?=$parObj->_getLabenames($arrayData,'searchheading2','name');?></p>
+                  <form name="searchWizard" method="get" id="searchWizard" action=""> 
+                  <div class="selectors">
+                      <div class="center">
+                          <div class="colums">
+                             <p><?=mb_strtoupper($parObj->_getLabenames($arrayDataWiz,'searchOpt1','name'),'UTF-8');?></p>
+                             <div class="selet3">
+                              	<select name="user_goal" id="user_goal"  onchange="return assignchoice();" >
+                                                                 
+                                	<option value="" selected="selected">
+									  <?=$parObj->_getLabenames($arrayData,'select','name');?>
+                                      </option>
+                                      <?php foreach($wizard_goals as $wizard_goal){ ?>
+                                      <?php if($lanId == 1) {
+                        
+                                        if($wizard_goal['flex_id'] != 'gol11' && $wizard_goal['flex_id'] != 'gol10')
+                        
+                                        { ?>
+                                      <option value="<?  echo $wizard_goal['flex_id']; ?>" ><? echo $wizard_goal['item_name'];?></option>
+                                      <?php } } 	else {?>
+                                      <option value="<? echo $wizard_goal['flex_id']; ?>" ><? echo $wizard_goal['item_name'];?></option>
+                                      <? }?>
+                                      <? }?>
+                               
+                                      </select>
+                                      <input type="hidden" name="cont_goal" id="cont_goal" value=""/>
+                             </div>
+                          </div>
+                          
+                          <div class="colums">
+                             <p><?=mb_strtoupper($parObj->_getLabenames($arrayDataWiz,'searchOpt2','name'),'UTF-8');?></p>
+                             <div class="selet3">
+                                     <select name="user_level" id="user_level" onChange="return assignchoice();">
+                                          <option value="" selected="selected">
+                                          <?=$parObj->_getLabenames($arrayData,'select','name');?>
+                                          </option>
+                                           <?php
+                                           foreach($wizard_levels as $wizard_level_id=>$wizard_level_value)
+                                            {
+                                                $wizard_level_item_name = $parObj->_getLabenames($arrayDataWiz,"jiwok_level".$wizard_level_id,'name');
+                                                if($wizard_level_item_name=="")
+                                                    {
+                                                        $wizard_level_item_name=htmlentities(utf8_decode($wizard_level['item_name']));
+                                                    }
+                                            
+                                            ?>
+                                          
+                                          <option value=<?=$wizard_level_id?>>
+                                          <?=$wizard_level_item_name?>
+                                          </option>
+                                          <?php }
+                                           ?>
+                                        
+                                      </select>
+                                      <input type="hidden" name="cont_level" id="cont_level" value=""/>
+                             </div>
+                          </div>
+                          <div class="colums">
+                             <?php if($lanId == 1) { ?>
+                                <p>
+                                  <?=$parObj->_getLabenames($arrayDataWiz,'searchOpt3','name');?>
+                                </p><?php }else{ ?>
+                                <p>
+                                  <?=mb_strtoupper($parObj->_getLabenames($arrayDataWiz,'searchOpt4','name'),'UTF-8');?>
+                                </p>
+                                <?php } ?>
+                             <div class="selet3">
+                             		<?php if($lanId == 1) { ?>
+                                    <select name="user_no_session"  id="user_no_session" onChange="return assignchoice();" >
+                                          <option value="" selected="selected">
+                                          <?=$parObj->_getLabenames($arrayData,'select','name');?>
+                                          </option>
+                                          <?php foreach($wizard_rythms as $rythm_id => $rythm_value){ ?>
+                                          <option value="<?php echo $rythm_id; ?>" ><?php echo $rythm_value; ?></option>
+                                          <? }?>
+                                        </select>
+                                        <input type="hidden" name="cont_session" id="cont_session" value=""/>
+                                   <?php }else{ ?>
+                                   <select name="user_sport" id="user_sport"  onchange="return assignchoice();" >
+                                      <option value="" selected="selected">
+                                      <?=$parObj->_getLabenames($arrayData,'select','name');?>
+                                      </option>
+                                      <?php foreach($wizard_sports as $sports_row){ ?>
+                                       <!------------------Temporary adjustment for polish sports hiding----------------->
+											<?php 
+                                             if($lanId ==5)
+                                             {
+                                                
+                                             if(!(($sports_row['flex_id']==16) || ($sports_row['flex_id']==6) || ($sports_row['flex_id']==13)))
+                                             {?>
+                                            <option value="<?php echo $sports_row['flex_id']; ?>" ><?php echo $sports_row['item_name']; ?></option>
+                                            <? }
+                                             }
+											 else {?>
+                                                  
+                                                      <option value="<?php echo $sports_row['flex_id']; ?>" ><?php echo $sports_row['item_name']; ?></option>
+                                                      <? }}?>
+                                                    </select>
+                                                     <input type="hidden" name="cont_sport" id="cont_sport" value=""/>
+                                                    <?php } ?>
+                                     
+                             </div>
+                          </div>
+                      </div>
+                  </div>
+                  <input type="hidden" name="langfield" id="langfield" value="<?= $lanId ;?>"/>
+                  <div class="validate">
+                  <input type="submit" name="search" value="<?=strtoupper($parObj->_getLabenames($arrayDataWiz,'searchBtnTxt','name'));?>" onClick="return validateSearch();"/>
+                 </div>
+                    </form>  
+                </div>
+              
+           </div>
+       
+       
+       </section>
+     
+     <section class="theme-select mid-wrapper enter-midsec">
+        <div class="frame">
+           <h2 class="heading"><?=$parObj->_getLabenames($arrayDataWiz,'searchDir_1','name');?></h2>
+           <div class="categories">
+              <?php include_once("right_cate_list.php"); ?>
+           </div>
+           
+        </div>
+     </section>
+    <?php
+		$topCntrCnt=0;
+		$topSrch=$searchObj->getTopSearchs($lanId);
+		if(count($topSrch)>0){
+	?>
+    <section class="top_10">
+      <h2 class="heading"><?=$parObj->_getLabenames($arrayDataWiz,'topTenTxt','name');?>
+    </h2>
+    <ul>
+           
+      <?php //echo "<pre>";print_r($topSrch);exit;
+		foreach($topSrch as $topData){
+			$topCntrCnt=$topCntrCnt+1;
+			if($_SERVER['HTTP_HOST'] == "www.jiwok.com.jiwok-wbdd2.najman.lbn.fr")
+			{
+				$topData['web_link'] =	str_replace("http://www.jiwok.com","http://www.jiwok.com.jiwok-wbdd2.najman.lbn.fr",$topData['web_link']);
+			}
+	?>
+      <li>        
+        <a href="#" OnClick="location.href='<?php echo $topData['web_link']; ?>'" target="_blank">
+        <figure>
+                 <img class="corner" src="<?=ROOT_FOLDER?>images/corner-4.png" alt="jiwok">
+              <!--   <img src="src="<?php  // echo ROOT_FOLDER?>uploads/products/<?php //echo $topData['program_image']; ?>" ">-->
+               <img src="<?=ROOT_FOLDER?>images/dummy.jpg" alt=""/>
+             </figure>
+        </a>
+        <figcaption><h3><span><?php echo  $topData['rank']; ?></span>&nbsp;<a href="<?php echo $topData['web_link']; ?>" ><?php
+			echo mb_strtoupper($topData['title'],'UTF-8');
+		 ?></a></h3></figcaption>
+       </li>
+      <?php } ?>
+    </ul>
+    <?php } ?>
+     
+        
+      
+     
+     </section>
+     <?php include_once("footer.php"); ?>

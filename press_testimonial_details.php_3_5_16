@@ -1,0 +1,121 @@
+<?php session_start();
+include_once('includeconfig.php'); 
+if($lanId=="")$lanId=1;	 
+$parObj 		= 	new Contents('press_testimonial_details.php');
+$objGen     	=   new General();
+$returnData		= 	$parObj->_getTagcontents($xmlPath,'homepage','label');
+$arrayDataHome	= 	$returnData['general'];
+
+$returnData		= $parObj->_getTagcontents($xmlPath,'contents','label');
+$arrayData		= $returnData['general'];
+?>
+<?php include("header.php"); ?>
+   <script src="<?=ROOT_FOLDER?>js/jquery.easytabs.min.js" type="text/javascript"></script>
+   <script type="text/javascript">
+    $(document).ready(function(){
+		$("#count").val(1);
+		var default_val=$("#default").val();
+		if(default_val==""){
+			selectDetails(0,'t');
+		}else{
+			selectDetails(0,default_val);
+		}	
+    
+	$('#tab-container').easytabs();
+	});
+    function selectDetails(count,default_val){
+		var count      =count;
+		count          =count+1;
+		if(count!=1){
+		$("#count").val(count);
+		}
+		if(default_val=='t'){
+			$("#testi").addClass("active");
+			$("#testimonials_det").show();
+            $("#LA-PRESSE").hide();
+            var lanId      =$("#lanId").val();
+		   
+		
+		$.ajax({
+				url : 'testimonial_display.php',
+				type: 'POST',
+				data: 'count='+count+'&lanId='+lanId,
+			    success: function(response){
+					
+					   $('#testimonials_det').hide().html(response).fadeIn('xslow');
+				    }
+		       });
+		}else if(default_val=='p'){
+			
+			selectDetails_press();
+		}
+		
+		
+		
+		
+		
+	}
+	function selectDetails_press(){
+		    $("#press2").addClass("active"); 
+		    $("#testi").removeClass("active"); 
+		    $("#testimonials_det").hide();
+            $("#LA-PRESSE").show();
+		var lanId      =$("#lanId").val();
+		$.ajax({
+				url : 'press.php',
+				type: 'POST',
+				data: 'lanId='+lanId,
+			    success: function(response){
+					   $('#press_det').hide().html(response).fadeIn('xslow');
+				    }
+		       });
+	}
+  </script>
+<div class="banner_01 bannerH">
+         <div class="bred-hovr">
+            <ul class="bredcrumbs">
+                <li><?php echo mb_strtoupper($parObj->_getLabenames($arrayData,'searchPath','name'),'UTF-8');?></li>
+                <li><a href="<?=ROOT_JWPATH?>"><?php echo mb_strtoupper($parObj->_getLabenames($arrayData,'homeName','name'),'UTF-8');?></a></li>
+                <li>></li>
+               <li><a href="#" class="select"><?php echo mb_strtoupper($parObj->_getLabenames($arrayData,'newPressHeadTxt','name'),'UTF-8');?></a></li>     </ul>
+         </div>
+          <div class="press_caption"><h1><?php echo $parObj->_getLabenames($arrayDataHome,'press_page_heading','name');?></h1><br/>
+          <!--<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
+          </div>
+          <div class="banner-press">
+         <img src="<?=ROOT_FOLDER?>admin/crop/assets/img/shutterstock_292072529.jpg" class="img-responsive" alt="banner">
+         </div>
+</div>  
+     
+<div class="frame-3">
+	<input type="hidden" name="default" id="default" value="<?php echo $_GET["select"]?>">
+<div id="tab-container" class='tab-container'>
+ <ul class='etabs'>
+   <li class='tab evidence' id="testi">
+       <span class="left">&nbsp;</span> 
+       <span class="right">&nbsp;</span> 
+       <a  href="javascript:selectDetails(0,'t');"><?php echo mb_strtoupper($parObj->_getLabenames($arrayDataHome,'testimonials','name'),'UTF-8');?></a>
+      
+   </li>
+   <li  class='tab press2' id="press2">
+    <span class="left">&nbsp;</span> 
+       <span class="right">&nbsp;</span>
+   <a  href="javascript:selectDetails_press();"><?php echo mb_strtoupper($parObj->_getLabenames($arrayDataHome,'newPressTxt','name'),'UTF-8');?></a></li>
+   </ul>
+     <div class='panel-container'>
+     <div class="col-md-12 col-sm-12 col-xs-12">
+	     <input type="hidden" name="count" id="count" value="1">
+         <input type="hidden" value="<?php echo $lanId; ?>" name="lanId" id="lanId">
+         <span id="testimonials_det" style="display:none"></span>
+        <div id="LA-PRESSE" style="display:none" class="tab_02">
+        <div class="frame-4">
+			<div class="chanels" id="press_det">
+			</div> 
+         </div>
+       </div>
+      </div> 
+ </div>
+ </div>
+      
+<!---------------footer.........-->     
+<?php include("footer.php");  ?>

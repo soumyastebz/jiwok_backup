@@ -1,0 +1,845 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Jiwok</title>
+<link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
+
+<!-- Internet Explorer HTML5 enabling code: -->
+<!--[if IE]>
+           <script src="js/html5.js"></script>
+
+<![endif]-->
+
+<link href="resources/style.css" rel="stylesheet" type="text/css" />
+<link href="resources/style_dev.css" rel="stylesheet" type="text/css">
+		<link href="css/main.css" rel="stylesheet">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script language="javascript">
+ function showhide(ctrl)
+ 	{		
+		$("#"+ctrl).slideToggle();
+	}
+</script> 
+<script>
+equalheight = function(container){
+
+var currentTallest = 0,
+     currentRowStart = 0,
+     rowDivs = new Array(),
+     $el,
+     topPosition = 0;
+ $(container).each(function() {
+
+   $el = $(this);
+   $($el).height('auto')
+   topPostion = $el.position().top;
+
+   if (currentRowStart != topPostion) {
+     for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+       rowDivs[currentDiv].height(currentTallest);
+     }
+     rowDivs.length = 0; // empty the array
+     currentRowStart = topPostion;
+     currentTallest = $el.height();
+     rowDivs.push($el);
+   } else {
+     rowDivs.push($el);
+     currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+  }
+   for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+     rowDivs[currentDiv].height(currentTallest);
+   }
+ });
+}
+
+$(window).load(function() {
+	
+  equalheight('.JW_ents .colums');
+});
+$(window).resize(function(){
+  equalheight('.JW_ents .colums');
+});
+</script>
+<!---------------------------->
+</head>
+<body>
+<header>
+  <div class="frame">
+  <h1 class="logo">
+     <a href="index.html"><img src="images/logo.png" alt="Jiwok" title="Jiwok"></a>
+  </h1>
+  <hgroup>
+	<ul class="user">
+         <li><a href="#">soumya A</a></li>
+       <li>  <a href="#">Déconnexion</a></li>
+     </ul> 
+     <div class="choose-language">
+      <ul>      
+		  <li>
+		   <img src="images/jiwok_language-icon.png" alt="select language" />
+		   <h5 style="color:#fff;margin:0 0 0 10px;display:inline-block;">FR</h5><img class="drop-arrow" src="images/lang-dropdown-arrow.png" alt="select language" />
+			<ul>
+             <li><a href="setLang.php?langId=2&path=cHJlc3NfdGVzdGltb25pYWxfZGV0YWlscy5waHA=&req_name=&rq="><img src="images/jiwok_06.png" title="French" alt="French"  /><h5>FRENCH</h5></a></li>
+		
+            <li><a href="http://en.jiwok.com/en/index_eng.php"><img src="images/jiwok_03.png" alt="English" title="English"/><h5>ENGLISH</h5></a></li>
+              
+                        <li><a href="setLang.php?langId=5&path=cHJlc3NfdGVzdGltb25pYWxfZGV0YWlscy5waHA=&req_name=&rq="><img src="images/jiwok_09.png" title="Polish" alt="Polish" /><h5>POLISH</h5></a></li>	
+		  
+			</ul>
+		  </li>
+     </ul>
+     </div>
+  </hgroup>
+  
+  </div>
+</header>
+
+    
+    
+    <div class="top-nav">
+        <nav class="nav">    
+					<ul class="nav-list">
+						<li class="nav-item"><a href="?=home">ACCUEIL</a></li>
+						<li class="nav-item"><a href="?=home">VOTRE ENTRAINEMENT SUR MESURE</a></li>
+                        <li class="nav-item"><a href="?=home">LES COACHS</a></li>
+                        <li class="nav-item"><a href="?=home">BLOG</a></li>
+                        <li class="nav-item"><a href="?=home">FORUM</a></li>
+                        <li class="nav-item"><a href="?=home">CONTACT</a></li>
+                        <li class="nav-item"><a href="?=home">AIDE</a></li>
+					</ul>
+				</nav>
+     </div>
+       <section class="banner-static">
+       <div class="bred-hovr second">
+          <ul class="bredcrumbs">
+               <li><a href="#">VOUS ÊTES ICI: MON COMPTE</a></li>
+               <li>&gt;</li>
+               <li>MODIFIER MON COMPTE</li>
+            </ul>
+       </div>
+           <div class="bnr-image"><img src="images/banner_03.jpg" alt="jiwok"></div>
+           <div class="bnr-content">
+                <div class="inner">
+                  <div class="heading3"><p>triathlon</p></div> 
+                  <div class="line2 second"><p>&nbsp;</p></div>
+                  
+                    <div class="bnr-content2">
+                        <div>Suivez nos programmes d’entrainement triathlon afin de vous préparer d’une manière optimale à un 
+triathlon S (sprint : 750 mètres de natation, 20 kilomètres de cyclisme (vélo), 5 kilomètres de course à 
+pied (running)) ou M (courte distance : 1500 mètres de natation, 40 kilomètres de cyclisme (vélo), 10 
+kilomètres de course à pied (running)).Tous nos plans d’entrainement triathlon ont été réalisés par notre 
+équipe de coach professionnel spécialisé dans la préparation au triathlon.</div>
+                    </div>
+                </div>
+           </div>
+       
+       
+       </section>
+     
+     <section class="JW_ents">
+             <div class="colums">
+                <figure>
+                  <img src="images/corner-4.png" alt="jiwok" class="corner">
+                  <img src="images/dummy-2.jpg" alt="Jiwok">
+                </figure>
+                <article>
+                  <h3>TRIATHLON</h3>
+                  <p>Préparer un triathlon 
+de format sprint ou courte 
+distance, 3 fois par semaine 
+pendant 8 semaines.</p>
+
+     <div class="listing">
+       <div class="left"><span>Durée</span></div>
+       <div class="right">8 semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Rythme</span></div>
+       <div class="right">3 fois/semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Niveau</span></div>
+       <div class="right">Pratique une activité sportive régulière</div>
+     </div>
+         <div class="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+         </div>   
+         <!--<input type="button" class="btn" value="DÉCOUVRIR L’ENTRAÎNEMENT">-->
+         <a href="#" class="btn">DÉCOUVRIR L’ENTRAÎNEMENT</a>    
+                </article>
+                
+             </div>
+             <div class="colums">
+                <figure>
+                  <img src="images/corner-4.png" alt="jiwok" class="corner">
+                  <img src="images/dummy-2.jpg" alt="Jiwok">
+                </figure>
+                <article>
+                  <h3>TRIATHLON</h3>
+                  <p>Préparer un triathlon 
+de format sprint ou courte 
+distance, 3 fois par semaine 
+pendant 8 semaines.</p>
+
+     <div class="listing">
+       <div class="left"><span>Durée</span></div>
+       <div class="right">8 semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Rythme</span></div>
+       <div class="right">3 fois/semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Niveau</span></div>
+       <div class="right">Pratique une activité sportive régulière</div>
+     </div>
+         <div class="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+         </div>   
+         <!--<input type="button" class="btn" value="DÉCOUVRIR L’ENTRAÎNEMENT">-->
+         <a href="#" class="btn">DÉCOUVRIR L’ENTRAÎNEMENT</a>    
+                </article>
+                
+             </div>
+             
+              <div class="colums">
+                <figure>
+                  <img src="images/corner-4.png" alt="jiwok" class="corner">
+                  <img src="images/dummy-2.jpg" alt="Jiwok">
+                </figure>
+                <article>
+                  <h3>TRIATHLON</h3>
+                  <p>Préparer un triathlon 
+de format sprint ou courte 
+distance, 3 fois par semaine 
+pendant 8 semaines.</p>
+
+     <div class="listing">
+       <div class="left"><span>Durée</span></div>
+       <div class="right">8 semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Rythme</span></div>
+       <div class="right">3 fois/semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Niveau</span></div>
+       <div class="right">Pratique une activité sportive régulière</div>
+     </div>
+         <div class="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+         </div>   
+         <!--<input type="button" class="btn" value="DÉCOUVRIR L’ENTRAÎNEMENT">-->
+         <a href="#" class="btn">DÉCOUVRIR L’ENTRAÎNEMENT</a>    
+                </article>
+                
+             </div>
+             <div class="colums">
+                <figure>
+                  <img src="images/corner-4.png" alt="jiwok" class="corner">
+                  <img src="images/dummy-2.jpg" alt="Jiwok">
+                </figure>
+                <article>
+                  <h3>TRIATHLON</h3>
+                  <p>Préparer un triathlon 
+de format sprint ou courte 
+distance, 3 fois par semaine 
+pendant 8 semaines.</p>
+
+     <div class="listing">
+       <div class="left"><span>Durée</span></div>
+       <div class="right">8 semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Rythme</span></div>
+       <div class="right">3 fois/semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Niveau</span></div>
+       <div class="right">Pratique une activité sportive régulière</div>
+     </div>
+         <div class="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+         </div>   
+         <!--<input type="button" class="btn" value="DÉCOUVRIR L’ENTRAÎNEMENT">-->
+         <a href="#" class="btn">DÉCOUVRIR L’ENTRAÎNEMENT</a>    
+                </article>
+                
+             </div>
+             
+              <div class="colums">
+                <figure>
+                  <img src="images/corner-4.png" alt="jiwok" class="corner">
+                  <img src="images/dummy-2.jpg" alt="Jiwok">
+                </figure>
+                <article>
+                  <h3>TRIATHLON</h3>
+                  <p>Préparer un triathlon 
+de format sprint ou courte 
+distance, 3 fois par semaine 
+pendant 8 semaines.</p>
+
+     <div class="listing">
+       <div class="left"><span>Durée</span></div>
+       <div class="right">8 semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Rythme</span></div>
+       <div class="right">3 fois/semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Niveau</span></div>
+       <div class="right">Pratique une activité sportive régulière</div>
+     </div>
+         <div class="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+         </div>   
+         <!--<input type="button" class="btn" value="DÉCOUVRIR L’ENTRAÎNEMENT">-->
+         <a href="#" class="btn">DÉCOUVRIR L’ENTRAÎNEMENT</a>    
+                </article>
+                
+             </div>
+        <div class="colums">
+                <figure>
+                  <img src="images/corner-4.png" alt="jiwok" class="corner">
+                  <img src="images/dummy-2.jpg" alt="Jiwok">
+                </figure>
+                <article>
+                  <h3>TRIATHLON</h3>
+                  <p>Préparer un triathlon 
+de format sprint ou courte 
+distance, 3 fois par semaine 
+pendant 8 semaines.</p>
+
+     <div class="listing">
+       <div class="left"><span>Durée</span></div>
+       <div class="right">8 semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Rythme</span></div>
+       <div class="right">3 fois/semaine</div>
+     </div>
+     
+     <div class="listing">
+       <div class="left"><span>Niveau</span></div>
+       <div class="right">Pratique une activité sportive régulière</div>
+     </div>
+         <div class="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+           <img src="images/rating-star_small.png" alt="rating">
+         </div>   
+         <!--<input type="button" class="btn" value="DÉCOUVRIR L’ENTRAÎNEMENT">-->
+         <a href="#" class="btn">DÉCOUVRIR L’ENTRAÎNEMENT</a>    
+                </article>
+                
+             </div>
+             
+            
+     </section>
+     <section class="JW_search_new">
+          
+                      <div class="center">
+                      <h3>une nouvelle recherche?</h3>
+                          <div class="colums">
+                             <p>QUEL EST VOTRE OBJECTIF?</p>
+                             <div class="selet3">
+                                     <select>
+                                        
+                                        <option value="-11">CHOISISSEZ S’IL VOUS PLAIT</option>
+                    
+                    
+                                        <option value="-10">GMT -10:00 USA (Hawaï)</option>
+                    
+                    
+                                        <option value="-9.5">GMT-09:30 Îles Marquises</option>
+                    
+                    
+                                        <option value="-9">GMT -09:00 USA (Alaska)</option>
+                    
+                    
+                                        <option value="-8">GMT -08:00 Amérique du Nord (Pacifique)</option>
+                    
+                    
+                                        <option value="-7">GMT -07:00 USA (Mountain/Montagnes Rocheuses)</option>
+                    
+                    
+                                        <option value="-6">GMT -06:00 USA (Central)</option>
+                    
+                    
+                                        <option value="-5">GMT -05:00 USA (Eastern/Est)</option>
+                    
+                    
+                                        <option value="-4">GMT -04:00 Atlantique</option>
+                    
+                    
+                                        <option value="-3.5">GMT -03:30 Canada (Terre-Neuve)</option>
+                    
+                    
+                                        <option value="-3">GMT -03:00 Argentine</option>
+                    
+                    
+                                        <option value="-2">GMT -02:00 Centre-Atlantique</option>
+                    
+                    
+                                        <option value="-1">GMT -01:00 Açores</option>
+                    
+                    
+                                        <option value="0">GMT Royaume-Uni, Espagne</option>
+                    
+                    
+                                        <option value="1">GMT+01:00  France ,Europe de l'Ouest</option>
+                    
+                    
+                                        <option value="2">GMT+02:00 Europe de l'Est</option>
+                    
+                    
+                                        <option value="3">GMT +03:00 Russie</option>
+                    
+                    
+                                        <option value="3.5">GMT +03:30 Iran</option>
+                    
+                    
+                                        <option value="4">GMT+04:00 Arabie</option>
+                    
+                    
+                                        <option value="4.5">GMT +04:30 Afghanistan</option>
+                    
+                    
+                                        <option value="5">GMT+05:00 Pakistan, Asie occidentale</option>
+                    
+                    
+                                        <option value="5.5" selected="">GMT +05:30 Inde</option>
+                    
+                    
+                                        <option value="6">GMT+6:00 Bangladesh, Asie centrale</option>
+                    
+                    
+                                        <option value="6.5">GMT +06:30 Birmanie</option>
+                    
+                    
+                                        <option value="7">GMT +07:00 Bangkok, Hanoi, Djakarta</option>
+                    
+                    
+                                        <option value="8">GMT +08:00 Chine, Taiwan</option>
+                    
+                    
+                                        <option value="9">GMT +09:00 Japon</option>
+                    
+                    
+                                        <option value="9.5">GMT +09:30 Australie (heure centrale)</option>
+                    
+                    
+                                        <option value="10">GMT+10:00 Australie (heure de l’Est)</option>
+                    
+                    
+                                        <option value="10.5">GMT+10:30 Australie (île de Lord Howe)</option>
+                    
+                    
+                                        <option value="11">GMT +11:00 Pacifique central</option>
+                    
+                    
+                                        <option value="11.5">GMT+11:30 Îles Norfolk</option>
+                    
+                    
+                                        <option value="12">GMT+12:00 Fidji, Nouvelle-Zélande</option>
+                                      </select>
+                             </div>
+                          </div>
+                          
+                          <div class="colums">
+                             <p>QUEL EST VOTRE NIVEAU?</p>
+                             <div class="selet3">
+                                     <select>
+                                        <option value="-12">CHOISISSEZ S’IL VOUS PLAIT</option>
+                                        <option value="-11">GMT -11 Samoa</option>
+                    
+                    
+                                        <option value="-10">GMT -10:00 USA (Hawaï)</option>
+                    
+                    
+                                        <option value="-9.5">GMT-09:30 Îles Marquises</option>
+                    
+                    
+                                        <option value="-9">GMT -09:00 USA (Alaska)</option>
+                    
+                    
+                                        <option value="-8">GMT -08:00 Amérique du Nord (Pacifique)</option>
+                    
+                    
+                                        <option value="-7">GMT -07:00 USA (Mountain/Montagnes Rocheuses)</option>
+                    
+                    
+                                        <option value="-6">GMT -06:00 USA (Central)</option>
+                    
+                    
+                                        <option value="-5">GMT -05:00 USA (Eastern/Est)</option>
+                    
+                    
+                                        <option value="-4">GMT -04:00 Atlantique</option>
+                    
+                    
+                                        <option value="-3.5">GMT -03:30 Canada (Terre-Neuve)</option>
+                    
+                    
+                                        <option value="-3">GMT -03:00 Argentine</option>
+                    
+                    
+                                        <option value="-2">GMT -02:00 Centre-Atlantique</option>
+                    
+                    
+                                        <option value="-1">GMT -01:00 Açores</option>
+                    
+                    
+                                        <option value="0">GMT Royaume-Uni, Espagne</option>
+                    
+                    
+                                        <option value="1">GMT+01:00  France ,Europe de l'Ouest</option>
+                    
+                    
+                                        <option value="2">GMT+02:00 Europe de l'Est</option>
+                    
+                    
+                                        <option value="3">GMT +03:00 Russie</option>
+                    
+                    
+                                        <option value="3.5">GMT +03:30 Iran</option>
+                    
+                    
+                                        <option value="4">GMT+04:00 Arabie</option>
+                    
+                    
+                                        <option value="4.5">GMT +04:30 Afghanistan</option>
+                    
+                    
+                                        <option value="5">GMT+05:00 Pakistan, Asie occidentale</option>
+                    
+                    
+                                        <option value="5.5" selected="">GMT +05:30 Inde</option>
+                    
+                    
+                                        <option value="6">GMT+6:00 Bangladesh, Asie centrale</option>
+                    
+                    
+                                        <option value="6.5">GMT +06:30 Birmanie</option>
+                    
+                    
+                                        <option value="7">GMT +07:00 Bangkok, Hanoi, Djakarta</option>
+                    
+                    
+                                        <option value="8">GMT +08:00 Chine, Taiwan</option>
+                    
+                    
+                                        <option value="9">GMT +09:00 Japon</option>
+                    
+                    
+                                        <option value="9.5">GMT +09:30 Australie (heure centrale)</option>
+                    
+                    
+                                        <option value="10">GMT+10:00 Australie (heure de l’Est)</option>
+                    
+                    
+                                        <option value="10.5">GMT+10:30 Australie (île de Lord Howe)</option>
+                    
+                    
+                                        <option value="11">GMT +11:00 Pacifique central</option>
+                    
+                    
+                                        <option value="11.5">GMT+11:30 Îles Norfolk</option>
+                    
+                    
+                                        <option value="12">GMT+12:00 Fidji, Nouvelle-Zélande</option>
+                                      </select>
+                             </div>
+                          </div>
+                          
+                          <div class="colums">
+                             <p>QUEL EST VOTRE CHOIX DE PRATIQUE ?</p>
+                             <div class="selet3">
+                                     <select>
+                                        <option value="-12">CHOISISSEZ S’IL VOUS PLAIT</option>
+                                        <option value="-11">GMT -11 Samoa</option>
+                    
+                    
+                                        <option value="-10">GMT -10:00 USA (Hawaï)</option>
+                    
+                    
+                                        <option value="-9.5">GMT-09:30 Îles Marquises</option>
+                    
+                    
+                                        <option value="-9">GMT -09:00 USA (Alaska)</option>
+                    
+                    
+                                        <option value="-8">GMT -08:00 Amérique du Nord (Pacifique)</option>
+                    
+                    
+                                        <option value="-7">GMT -07:00 USA (Mountain/Montagnes Rocheuses)</option>
+                    
+                    
+                                        <option value="-6">GMT -06:00 USA (Central)</option>
+                    
+                    
+                                        <option value="-5">GMT -05:00 USA (Eastern/Est)</option>
+                    
+                    
+                                        <option value="-4">GMT -04:00 Atlantique</option>
+                    
+                    
+                                        <option value="-3.5">GMT -03:30 Canada (Terre-Neuve)</option>
+                    
+                    
+                                        <option value="-3">GMT -03:00 Argentine</option>
+                    
+                    
+                                        <option value="-2">GMT -02:00 Centre-Atlantique</option>
+                    
+                    
+                                        <option value="-1">GMT -01:00 Açores</option>
+                    
+                    
+                                        <option value="0">GMT Royaume-Uni, Espagne</option>
+                    
+                    
+                                        <option value="1">GMT+01:00  France ,Europe de l'Ouest</option>
+                    
+                    
+                                        <option value="2">GMT+02:00 Europe de l'Est</option>
+                    
+                    
+                                        <option value="3">GMT +03:00 Russie</option>
+                    
+                    
+                                        <option value="3.5">GMT +03:30 Iran</option>
+                    
+                    
+                                        <option value="4">GMT+04:00 Arabie</option>
+                    
+                    
+                                        <option value="4.5">GMT +04:30 Afghanistan</option>
+                    
+                    
+                                        <option value="5">GMT+05:00 Pakistan, Asie occidentale</option>
+                    
+                    
+                                        <option value="5.5" selected="">GMT +05:30 Inde</option>
+                    
+                    
+                                        <option value="6">GMT+6:00 Bangladesh, Asie centrale</option>
+                    
+                    
+                                        <option value="6.5">GMT +06:30 Birmanie</option>
+                    
+                    
+                                        <option value="7">GMT +07:00 Bangkok, Hanoi, Djakarta</option>
+                    
+                    
+                                        <option value="8">GMT +08:00 Chine, Taiwan</option>
+                    
+                    
+                                        <option value="9">GMT +09:00 Japon</option>
+                    
+                    
+                                        <option value="9.5">GMT +09:30 Australie (heure centrale)</option>
+                    
+                    
+                                        <option value="10">GMT+10:00 Australie (heure de l’Est)</option>
+                    
+                    
+                                        <option value="10.5">GMT+10:30 Australie (île de Lord Howe)</option>
+                    
+                    
+                                        <option value="11">GMT +11:00 Pacifique central</option>
+                    
+                    
+                                        <option value="11.5">GMT+11:30 Îles Norfolk</option>
+                    
+                    
+                                        <option value="12">GMT+12:00 Fidji, Nouvelle-Zélande</option>
+                                      </select>
+                             </div>
+                          </div>
+                     <div class="clear"></div>
+                  <div class="validate"><input type="button" value="VALIDER VOTRE NOUVELLE RECHERCHE"></div>
+      </div>
+     </section>
+     <div class="foot-nav frame">
+                                                                                                                                                              
+        <ul class="nav_03 no-line">
+          <li><a href="#">aide</a></li>
+          <li><a href="#">plan du site</a></li>
+          <li><a href="#">qui sommes nous?</a></li>
+          <li><a href="#">termes et conditions</a></li>
+        </ul>
+     </div>
+     <footer>
+          <div class="frame">
+             <nav class="col-01">
+                <a class="logo" href="#"><img src="images/logo-footer.png" alt="Jiwok"></a>
+                <ul class="footnav_01">
+                   <li><a href="#">LES TÉMOIGNAGES</a></li>
+                   <li><a href="#">LA PRESSE</a></li>
+                   <li><a href="#">LES PASS JIWOK</a></li>
+                </ul>
+                <a class="find" href="#">RETROUVEZ NOUS<br> 
+SUR GOOGLE +</a>
+             </nav>
+              <nav class="col-02">
+                <h2><span>CE QUE JIWOK VOUS APPORTE</span></h2>
+                    <ul class="footnav_02">
+                      <li><a href="#">Courir plus vite</a></li>
+                      <li><a href="#">Améliorer sa VMA</a></li>
+                      <li><a href="#">Débuter en course à pied</a></li>
+                    </ul>
+                    <h2><span>LES COACHS</span></h2>
+              </nav>
+              <nav class="col-03">
+                <h2><span>VOTRE ENTRAÎNEMENT SUR MESURE</span></h2>
+                <div class="clear"></div>
+                <div class="colums">
+                <ul class="footnav_02">
+                      <li><a href="#">Carte cadeau sport running Courir plus</a></li>
+                      <li><a href="#">vite et améliorer sa vma</a></li>
+                      <li><a href="#">débuter en course à pied</a></li>
+                      <li><a href="#">Entrainement la parisienne</a></li>
+                      <li><a href="#">Entrainement Marathon Paris</a></li>
+                      <li><a href="#">Entrainement marche</a></li>
+                      <li><a href="#">Entrainement marche nordique</a></li>
+                      <li><a href="#">Entrainement marche sur tapis</a></li>
+                      <li><a href="#">Entrainement marche sur tapis roulant</a></li>
+                      <li><a href="#">Entrainement Mud Day - Spartan -</a></li>
+                      <li><a href="#">Fappading - Course d’obstacles</a></li>
+                      <li><a href="#">Entrainement Natation</a></li>
+                    </ul>
+                     <ul class="footnav_02">
+                      <li><a href="#">Entrainement tapis de course</a></li>
+                      <li><a href="#">Entrainement tapis roulant</a></li>
+                      <li><a href="#">Entrainement triathlon</a></li>
+                      <li><a href="#">Entrainement Ultra Trail</a></li>
+                      <li><a href="#">Entrainement velo appartement</a></li>
+                    </ul>
+                   </div>
+                   
+                   <div class="colums">
+                <ul class="footnav_02">
+                      <li><a href="#">Entrainement vélo d’appartement</a></li>
+                      <li><a href="#">Entrainement velo elliptique</a></li>
+                      <li><a href="#">Entrainement velo interieur</a></li>
+                      <li><a href="#">Perdre du poids 10 kg</a></li>
+                      <li><a href="#">Perdre du poids 5 kg</a></li>
+                      <li><a href="#">Plan entrainement 10 km</a></li>
+                    </ul>
+                    
+                     <ul class="footnav_02">
+                      <li><a href="#">Plan entrainement 20 km Paris</a></li>
+                      <li><a href="#">Plan entrainement marathon new york</a></li>
+                      <li><a href="#">Plan entrainement semi-marathon</a></li>
+                      <li><a href="#">Plan Entrainement Trail</a></li>
+                      <li><a href="#">Preparer le test de coope</a></li>
+                    </ul>
+                   </div>
+              </nav>  
+          </div>
+     </footer>
+     <div class="block_foot">
+        <h4>Débuter le jogging, running, course à pied, vélo appartement, elliptique, marche, trail</h4>
+    
+<p>Si vous désirez commencer à courir, faire du sport, débuter elliptique ou vous remettre au sport, Jiwok est le service qu'il vous faut !
+Tous les débutant pourront ainsi rapidement progresser.
+Vous serez coacher et vous pourrez progresser afin de rester en forme, retouver votre ligne et perdre du poids ( de 3 à 10 kilos).</p>
+
+<h4>Plan marathon, semi marathon, 10 km, trail</h4>
+<p>Jiwok propose également des plan d'entrainement marathon, semi marathon, 10 km et trail pour les débutants et les confirmées. Des objectifs de 1 h 30 à 4 h 30 afin de vous permettre de progresser, de courir plus et d'amioler votre temps de couse
+Vous pourrez également améliorer votre vma.</p>
+<h4>Perdre du poids en faisant du sport</h4>
+<p>Avec les conseils de votre coach jiwok, vous pourrez perdre du poids en courant, nageant ou pedélant grâce au jogging, running, course à pied, marche, tapis de course, vélo d'appartement, elliptique et natation
+Retrouver la forme rapidement et progressivement avec des séances de sports adaptés à votre niveau physique</p>
+<h4>courir et faire du sport en musique</h4>
+<p>Suivez les séances et les playlist Jiwok pour courir en musique. Les musiques selectionnés par jiwok vous permettront de courir, jogging, running avec des morceaux de musiques adaptés au sport</p>
+<h4>application ihpone et android sport</h4>
+<p>Installez notre application Iphone et Android pour suivre les séances de coaching Jiwok : séance running, jogging, course à pied, natation, marche, elliptique, vélo, tapis de course, marathon, semi marathon, 10 km, trail, débutant en sport, perte de poids</p>
+ </div>
+  
+  <ul class="foot_links">
+
+   <li><a href="http://www.jiwok.com/about-us">Qui sommes-nous?</a></li>
+
+   <li>|</li>
+
+   <li> <a href="http://www.jiwok.com/sitemap.php">Plan du site</a></li>
+
+   <li>|</li>
+
+   <li> <a href="http://www.jiwok.com/contact-us">Contact</a></li>
+
+  
+   <li>|</li>
+
+   <li> <a href="http://www.jiwok.com/terms-and-conditions">Termes et conditions</a></li>
+
+   <li>|</li>
+
+   <li> <a href="http://www.jiwok.com/press">Presse</a></li>
+
+   <li>|</li>
+
+   <li> <a href="http://www.jiwok.com/jobs">Job</a></li>
+
+   <li>|</li>
+
+    
+
+   <li> <a href="http://www.jiwok.com/partners">Partenaires</a></li>
+
+   <li>|</li>
+   <li> <a href="http://www.jiwok.com/faq">Aide</a></li>
+   </ul>  
+    
+   <p class="copyright">Copyrights JIWOK 2015  |  powered by Reubro International Debugging</p> 
+     </div>
+     
+     <script src="js/flaunt.js"></script>
+	
+		<!-- Demo Analytics -->
+		<script>
+			var _gaq=[['_setAccount','UA-20440416-10'],['_trackPageview']];
+			(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+			g.src='//www.google-analytics.com/ga.js';
+			s.parentNode.insertBefore(g,s)})(document,'script');
+		</script>
+</body>
+</html>

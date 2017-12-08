@@ -1,0 +1,611 @@
+<?php
+ob_start();
+session_start();
+/*--------------------------------------------------*/
+// Project 		: Jiwok
+// Created on	: 18-09-2015
+// Created by	: soumya
+// Purpose		: New Design Integration - Program details page 
+/*--------------------------------------------------*/
+
+include_once('includeconfig.php');
+include_once("includes/classes/class.programs.php");
+include_once("includes/classes/class.coach_master.php");
+//include_once("includes/trak_analysis.php");
+if($lanId=="")  $lanId=1;
+$errorMsg 	= '';	 
+
+$userid 	= $_SESSION['user']['userId'];	
+$objGen     = new General();
+//dynamic timezone changing
+if($tz		= $objGen->getTomeZonePHP($userid))	
+date_default_timezone_set($tz);
+
+$objPgm     		= new Programs($lanId);
+$objCoach     		= new CoachMaster($lanId);
+$parObj 			= new Contents('program_details.php');
+//$trakObj	=	new trakAnalysis();
+
+$headingData		= $parObj->_getTagcontents($xmlPath,'trainingprogram','pageHeading');
+$returnData			= $parObj->_getTagcontents($xmlPath,'trainingprogram','label');
+$arrayData			= $returnData['general'];
+$returnDataProfile	= $parObj->_getTagcontents($xmlPath,'myprofile','label');
+$arrayDataProfile	= $returnDataProfile['general'];
+
+if (isset($_REQUEST['program_id'])) 
+	{
+		$program_id  = base64_decode(trim($_REQUEST['program_id']));
+	}
+elseif (isset($_REQUEST['program_title_url'])) 
+	{
+		$program_id_from_title		=	explode("-",$_REQUEST['program_title_url']);
+		$program_id_from_array		= 	array_pop($program_id_from_title);
+		$program_details_array		=	$objPgm->_getOnePgm($program_id_from_array,$lanId);
+		$program_title_url			=	implode("-",$program_id_from_title);
+		$pro_url 					= 	$objPgm->makeProgramTitleUrl($program_details_array['program_title']);
+		$normal_url					= 	$objPgm->normal_url($pro_url);	
+		
+		// echo $program_title_url;exit;
+		if(strtolower($normal_url)==$program_title_url)
+			{//echo $normal_url;exit;
+				// change to correct program_title;  first urldecode;  then replace '-' with spaces
+				$program_title	= $objPgm->getProgramTitleFromUrl($program_title_url);
+				// Get program_id from program_title
+				$program_id	= $objPgm->getProgramIdFromTitle_lan($program_details_array['program_title'],$program_id_from_array);
+			}
+		else
+			{
+				// change to correct program_title;  first urldecode;  then replace '-' with spaces
+				$program_title	= $objPgm->getProgramTitleFromUrl($program_title_url);
+				// Get program_id from program_title
+				$program_id	= $objPgm->getProgramIdFromTitle_lan($program_title,$program_id_from_array);
+			}	 
+
+		if ($program_id=='') 
+			{
+				header('Location:'.ROOT_FOLDER.'entrainement',true,301);
+				exit;
+			}
+	}
+
+if(isset($_SESSION['user']['userId']) && $_SESSION['user']['userId'] !="")
+	{
+		$program 		= $objPgm->_getUserTrainingProgram($userid);
+		$program_id_tmp	= stripslashes(trim($program['program_id']));		
+		if($program_id_tmp	== $program_id)
+		{
+			header("Location: program_generate2.php?program_id=".base64_encode($program_id)."",true,301);
+			exit();
+		}	
+	}
+
+if(!isset($_POST['validate']))
+	{
+   		$startdate = date('d-m-Y');
+	}
+
+if(($objPgm->_checkLogin()) && isset($_REQUEST['todo']))
+	{
+		$freedays 	= $objPgm->_getFreeDays($userid);    
+		$startdate 	= date('Y-m-d');
+		$freedays 	= $objPgm->_getFreeDays($userid);
+		$expdate 	= $objPgm->_getProgramExpireDate($program_id,$startdate);	
+		
+		$userEmail	= $_SESSION['user']['user_email'];
+		$trakProperties = array('Program_Id'=>$program_id,'Start_date'=>$startdate,'Expiry_date'=>$expdate);
+		
+		if($objPgm->_checkUserFreePeriod($userid,$freedays))
+   			{    
+				$query = "INSERT INTO programs_subscribed 
+				values('','$program_id','$userid',CURDATE(),'','1','p',CURDATE(),'$expdate','single','','1')";
+				$result =  $GLOBALS['db']->query($query);
+				//$response = $trakObj->trakProgramSubscription($userEmail,$trakProperties);   
+           		header("location:program_generate2.php?program_id=".base64_encode($program_id),true,301);
+   			}
+   		elseif($objPgm->_checkUserPaymentPeriod($userid))
+   			{
+      
+				$query = "INSERT INTO programs_subscribed 
+				values('','$program_id','$userid',CURDATE(),'','1','p',CURDATE(),'$expdate','single','','1')";
+				$result =  $GLOBALS['db']->query($query);
+				//$response = $trakObj->trakProgramSubscription($userEmail,$trakProperties);   
+				header("location:program_generate2.php?program_id=".base64_encode($program_id),true,301);
+  			}
+   		elseif($objPgm->checkProgramSubscribed($userid)) 
+			{  		
+
+				$query = "INSERT INTO programs_subscribed 
+				values('','$program_id','$userid',CURDATE(),'','1','p',CURDATE(),'$expdate','single','','1')";				
+				$result =  $GLOBALS['db']->query($query);
+				//$response = $trakObj->trakProgramSubscription($userEmail,$trakProperties);   
+				header("location:program_generate2.php?program_id=".base64_encode($program_id),true,301);
+		   }
+		   else
+		   {
+				 header("location:".PAYPAGE,true,301);
+		   }
+	}
+	
+$data 	  	 	= $objPgm->_displayTrainingProgram($program_id,$lanId);
+//echo '<pre>',print_r($data);
+$flexid		 	= stripslashes(trim($data['flex_id']));
+if(($lanId	==	5) && ($flexid	== 'D23'))
+{
+	header("location:search_result.php",true,301);
+}
+$workout_cnt 	= $objPgm->_getWorkoutCount($flexid,$lanId);
+$workoutflex 	= $objPgm->_getFirstWorkoutId($flexid,$lanId);
+$pgmType  	 	= $objPgm->_getName(trim($data['training_type_flex_id']),$lanId);
+$programType 	= $trainingTypeFlexId[trim($data['training_type_flex_id'])]; // set in global variable
+$pgmFor 	 	= $objPgm->_getGroups(trim($data['program_for']),$lanId,'group');
+$schedule 	 	= $objPgm->_getName1(trim($data['schedule_type']),$lanId,'schedule_type');
+$pgmCategory 	= $objPgm->_getCatName(trim($data['program_category_flex_id']),$lanId);
+$pgmLevel 	 	= $objPgm->_getName1(trim($data['program_level_flex_id']),$lanId,'level');
+$pgmLevel		=	explode("(",$pgmLevel);
+$pgmLevel		=	$pgmLevel[0];
+$userPhotoPath 	= "uploads/users/";
+$imgPath 		= "uploads/programs/";
+
+
+
+$data['program_image']	=	$objGen->processProgramImage($flexid,$data['program_title'],$data['new_program_image']);
+
+
+$image 			= $objGen->_output(trim($data['program_image']));
+
+/*gg
+if($image != "")
+{
+	//$imageParams = $objPgm->_imageResize(trim($image),$imgPath,119,147);
+	$imageParams = $objPgm->_imageResize(trim($image),$imgPath,118,134);
+	$imageWidth  = $imageParams[0];
+	$imageHeight = $imageParams[1];
+}*/
+$loginUrl = base64_encode("program_details.php?program_id=".base64_encode($program_id));
+$pgm_status=$objPgm->_getProgramStatus($program_id);
+
+if($pgm_status!=4)
+	{
+		header('Location:'.ROOT_FOLDER.'entrainement',true,301);
+		exit;
+	}
+
+?>
+<?php include("header.php"); ?>
+
+
+<!--For slider 
+Added by	:	Dileep.E
+Date		:	07.01.12
+Description	:	This section used for including the training programs, which are 
+				linked via wizard function in trainer tool, in the slider.-->
+<?php
+	
+$selectQuery  	=	"select wizard_after,wizard_before from program_wizard where training_flex_id	=	'".$flexid."'";
+$result			= 	$GLOBALS['db']->getRow($selectQuery, DB_FETCHMODE_ASSOC);
+//$slides = array(0=>'sa',1=>'ds',2=>'fd',3=>'hy',4=>'gh',5=>'ju');
+$pgmFlexIds		=	explode(",",$result[wizard_after]);		
+$nextArrayPosition=	count($pgmFlexIds)-1;
+$pgmBeforFlexIds=	explode(",",$result[wizard_before]);
+foreach($pgmBeforFlexIds as $pgmBeforFlexId)
+{
+	if(!in_array($pgmBeforFlexId, $pgmFlexIds))
+	{
+		$pgmFlexIds[$nextArrayPosition]	=	$pgmBeforFlexId;
+		$nextArrayPosition++;	
+	}		
+}
+//Find programs from the same categories or sub categories	
+$pgmDetailsQuery=	"SELECT	program_category_flex_id FROM	program_master	WHERE	flex_id	= '".$flexid."'";
+$pgmDetailResult= 	$GLOBALS['db']->getRow($pgmDetailsQuery, DB_FETCHMODE_ASSOC);
+$programCategoryFlexId	=	explode(",",$pgmDetailResult[program_category_flex_id]);
+$findInCdtn		=	"";	
+foreach($programCategoryFlexId	as $key	=>	$programCategoryFlexIds)
+{
+	if($key	!=	0)
+	{
+		$findInCdtn		.=	"	OR	FIND_IN_SET('".trim($programCategoryFlexIds)."',program_category_flex_id)";
+	}
+	else
+	{
+		$findInCdtn		.=	"	WHERE	(FIND_IN_SET('".trim($programCategoryFlexIds)."',program_category_flex_id)";
+	}
+}
+if($findInCdtn	==	"")
+	$findInCdtn	.=	"	WHERE	program_status = '4'";
+else
+	$findInCdtn	.=	"	)	AND	(program_status = '4')";			
+$categoryQuery	=	"SELECT	DISTINCT flex_id FROM	program_master ".$findInCdtn;
+$categoryResult	=	$GLOBALS['db']->getAll($categoryQuery, DB_FETCHMODE_ASSOC);	
+foreach($categoryResult	as $categoryResults)
+{
+	if(!in_array($categoryResults[flex_id], $pgmFlexIds))
+	{
+		$pgmFlexIds[$nextArrayPosition]	=	$categoryResults[flex_id];
+		$nextArrayPosition++;	
+	}	
+}	
+shuffle($pgmFlexIds);
+$cnt	=	0;
+if($lanId	==	5)
+{
+	$adquery	=	"AND  PM.flex_id!=	'D23' ";//to hide polish pgm id=172
+}
+else
+{
+	$adquery	=	"";
+}
+foreach($pgmFlexIds	as $key=>$pgmFlexId)
+{
+	$selectQuery  	=	"select PM.*,PD.program_title from program_master AS PM LEFT JOIN program_detail AS PD ON PM.program_id =PD.program_master_id where PM.flex_id 	=	'".$pgmFlexId."' AND PD.language_id	=	'".$lanId."'".$adquery;
+	$result		=	$GLOBALS['db']->getRow($selectQuery, DB_FETCHMODE_ASSOC);
+	if(count($result)>0){
+		$slides[$cnt]		= 	$result;
+		$cnt++;
+	}					
+	//uploads/programs/<?=$objGen->_output(trim($data['program_image']))		
+}
+//$slides	=	$pgmFlexIds;
+$products='';
+
+foreach($slides as $v)
+{	
+	if($v['program_image']	!=	"")
+	{		
+		$v['program_image']	=	$objGen->processProgramImage(stripslashes(trim($v['flex_id'])),$v['program_title'],$v['program_image']);
+		$imgSource			=	"uploads/programs/".$objGen->_output(trim($v['program_image']));
+		$imageParamSlider	= $objPgm->_imageResize(trim($objGen->_output(trim($data['program_image']))),"uploads/programs/",118,128);
+		$imageWidthSlider  	= $imageParamSlider[0];
+		$imageHeightSlider 	= $imageParamSlider[1];	
+	}
+	else
+	{
+		$imgSource	=	"images/no_photo_pgm.jpg";	
+		$imageWidthSlider  	= '118';
+		$imageHeightSlider 	= '128';	
+	}
+	if($imageHeightSlider	==	0)
+	{
+		//$imageWidthSlider  	= '118';
+		$imageHeightSlider 	= '128';
+	}
+	
+	//$v['program_title']	=	strtolower($v['program_title']);
+	$pro_urlSlider 		= 	$objPgm->makeProgramTitleUrl(strtolower($v['program_title']));					
+	$normal_urlSlider	= 	$objPgm->normal_url($pro_urlSlider);		
+	$formAction			=	$normal_urlSlider."-".$v['program_id'];
+	$duration			=	$objGen->_output(trim($v['program_schedule']))." ".$objGen->_output(trim($objPgm->_getName1(trim($v['schedule_type']),$lanId,'schedule_type')));
+	if(($lanId	==	1) && ($objGen->_output(trim($v['program_schedule']))>1))
+		$duration	.=	's';		
+	$pgmForSlider	=	"";
+	if($v['program_for']	!=	"")	
+		$pgmForSlider	=	$objPgm->_getGroups(trim($v['program_for']),$lanId,'group');
+	//echo "is: ".$objPgm->_getGroups(trim($v['program_for']),$lanId,'group');
+	
+	/*<tr> 
+				<td colspan="2"><a href="'.$formAction.'" id="latestA">'.$v['program_title'].'</a></td>
+			</tr>	
+	<div id="latestA"><a href="'.$formAction.'">'.$title.'</a></div>*/
+	if(strlen($v['program_title'])	> 100)
+		$title	=	substr($v['program_title'],0,70)."....";
+	else
+		$title	=	$v['program_title'];
+	$slash	=	"/";	
+	if($lanId	==	5) 
+	{ 
+		$slash	=	' w ';
+		$search_value	=	"Zobacz&nbsp;szczegóły&nbsp;planu";
+	}	
+	else
+	{
+		$search_value	=	"Découvrir cet entraînement";
+	}
+	
+	//==================================================================
+	//<img src='.$imgSource.' width="118" height='.$imageHeightSlider.' alt='.$v['program_title'].' />
+	$products.='<div class="colums">
+                <figure>
+				  <img src="'.ROOT_FOLDER.'images/corner-ylw.png" alt="jiwok" class="corner">
+                  <a target="_blank" href="'.$formAction.'" ><img src="'.ROOT_FOLDER.'images/dummy-3.jpg" alt="'.$title.'"></a>
+                </figure>
+                <article>
+				<a itemprop="headline" href="'.$formAction.'"><h3>'.$title.'</h3></a> 
+				<form action="'.$formAction.'" method="post">
+				<div class="listing">
+				   <div class="left" itemprop="activityDuration" ><span>'.$parObj->_getLabenames($arrayData,'duration','name').':</span></div>
+				   <div class="right">'.$duration.'</div>
+				   <div class="listing">
+				   <div class="left" itemprop="activityFrequency" ><span>'.$parObj->_getLabenames($arrayData,'rythm','name').':</span></div>
+				   <div class="right">'.$objGen->_output(trim($v['program_rythm']))." ".$parObj->_getLabenames($arrayData,'times','name').$slash.$objGen->_output(trim($objPgm->_getName1(trim($v['schedule_type']),$lanId,'schedule_type'))).'</div>
+				 </div>
+     
+				 <div class="listing">
+				   <div class="left" itemprop="category"><span>'.$parObj->_getLabenames($arrayData,'level','name').': </span></div>
+				   <div class="right">'.$objGen->_output(trim($objPgm->_getName1(trim($v['program_level_flex_id']),$lanId,'level'))).'</div>
+				 </div>
+				 </div>	
+				 <div class="rating">
+				   <img src="'.ROOT_FOLDER.'images/rating-star_small.png" alt="rating">
+				   <img src="'.ROOT_FOLDER.'images/rating-star_small.png" alt="rating">
+				   <img src="'.ROOT_FOLDER.'images/rating-star_small.png" alt="rating">
+				   <img src="'.ROOT_FOLDER.'images/rating-star_small.png" alt="rating">
+				   <img src="'.ROOT_FOLDER.'images/rating-star_small.png" alt="rating">
+        		 </div> 
+				 <input type="submit" class="btn" value="'.mb_strtoupper($search_value,'UTF-8').'" name="">				  
+				</form> 
+				</article>
+             </div>';
+}	
+?>
+<!-- pop up ends -->
+<!--============================-->
+<div class="frame slider-first">
+<div class="callbacks_container">
+      <ul class="rslides" id="slider4">
+        <li><img src="<?=ROOT_FOLDER?>uploads/programsNew/<?php echo $image;?>" alt="Slide 01"></li>
+	   
+      </ul>
+    </div>
+    
+    <!---Adding microdata--------->
+	<script type="application/ld+json">
+		  {
+		  "@context": "http://schema.org",
+		  "@type": "BreadcrumbList",
+		  "itemListElement": [{
+			"@type": "ListItem",
+			"position": 1,
+			"item": {
+			  "@id": "<?=ROOT_JWPATH?>",
+			  "name": "<?=mb_strtoupper($parObj->_getLabenames($arrayData,'newPgeTxt','name'),'UTF-8');?>"
+			}
+		  },{
+			"@type": "ListItem",
+			"position": 2,
+			"item": {
+			  "@id": "<?=ROOT_JWPATH?>entrainement",
+			  "name": "<?=mb_strtoupper($parObj->_getLabenames($arrayData,'tryWorkOut','name'),'UTF-8');?>"
+			}
+		  }]
+		}
+	</script>
+    <section class="entertain_grid">
+       <nav  class="b_cumbs">
+       <ul>
+          <li><a href="<?=ROOT_JWPATH?>"><?=mb_strtoupper($parObj->_getLabenames($arrayData,'newPgeTxt','name'),'UTF-8');?></a></li> <li>&gt;</li>
+          <li><a href="<?=ROOT_JWPATH?>entrainement"><?=mb_strtoupper($parObj->_getLabenames($arrayData,'tryWorkOut','name'),'UTF-8');?></a></li> <li>&gt;</li>
+          <li class="current-itom"><a class="select"><?php echo mb_strtoupper($data['program_title'],'UTF-8');?></a></li>
+       </ul>
+    </nav>
+     <!--Popups starts here-->
+		<?php include_once("program_details_popup.php");?>
+      <!--Popups ends here-->
+    <span itemscope itemtype="https://schema.org/ExercisePlan">
+    <h1 class="title_01" itemprop="headline" ><?php echo $data['program_title'];?></h1>
+    <?php
+		$_SESSION["userViewProgram"]	=	$data['program_title'];
+	    $_SESSION["userViewProgramId"]	=	$program_id;
+	?>
+   <section class="chart">
+	 
+       <div class="colums" itemprop="activityDuration" >
+		   <div ><?php echo mb_strtoupper(html_entity_decode($parObj->_getLabenames($arrayData,'duration','name')),'UTF-8');?> </div>
+           <div><span><?=$objGen->_output(trim($data['program_schedule']))?> <?=$objGen->_output(trim($schedule))?></span></div>
+       </div>
+       <div class="colums" itemprop="activityFrequency">
+           <div><?=mb_strtoupper($parObj->_getLabenames($arrayData,'rythm','name'),'UTF-8');?></div>
+           <div><span><?=$objGen->_output(trim($data['program_rythm']))." ".$parObj->_getLabenames($arrayData,'times','name')."/".$objGen->_output(trim($schedule))?></span></div>
+       </div>
+       <div class="colums" itemprop="repetitions">
+           <div><?=mb_strtoupper(html_entity_decode($parObj->_getLabenames($arrayData,'workoutnum','name')),'UTF-8');?></div>
+           <div><span><?=$workout_cnt?></span></div>
+       </div>
+       <div class="colums" itemprop="category">
+           <div><?=mb_strtoupper($parObj->_getLabenames($arrayData,'level','name'),'UTF-8');?></div>
+           <div><span><?=$objGen->_output(trim($pgmLevel))?></span></div>
+       </div>
+       <div class="colums" >
+           <div>RATING </div>
+           <div><img src="<?=ROOT_FOLDER?>images/star.png" alt="rating">&nbsp;<img src="<?=ROOT_FOLDER?>images/star.png" alt="rating">&nbsp;<img src="<?=ROOT_FOLDER?>images/star.png" alt="rating">
+                      &nbsp;<img src="<?=ROOT_FOLDER?>images/star.png" alt="rating">&nbsp;<img src="<?=ROOT_FOLDER?>images/star.png" alt="rating"></div>
+       </div>
+  
+   </section>
+    </span>
+       <nav>
+         <a href="javascript:history.go(-1)" class="btn-return"><?=mb_strtoupper($parObj->_getLabenames($arrayData,'newBckTxt','name'),'UTF-8');?></a>
+         <!--Program Register button starts-->
+         <?php 
+				if($workout_cnt>0)
+					{ 
+         				if(!($objPgm->_checkLogin())) 
+							{  
+				?><a href="javascript:;" class="btn-sign" name="subscribe" id="subscribe" onclick="window.location.href='login_failed.php?fromPgm=1&returnUrl=<?=$loginUrl?>&msg=<?=base64_encode(3)?>';" rel="nofollow"><?=mb_strtoupper($parObj->_getLabenames($arrayData,'subscribe_unlog','name'),'UTF-8');?></a><?php 
+							}
+	 					elseif($programType=="program")
+	 						{ 
+	   							$programDt1 = $objPgm->_getUserTrainingProgramConfirm($userid);
+	  							if(count($programDt1) > 0) 
+									{ 
+	   			?><a href="javascript:;" class="btn-sign" name="subscribe" id="subscribe" onclick="displayConfirm();" rel="nofollow"><?=mb_strtoupper($parObj->_getLabenames($arrayData,'subscribe','name'),'UTF-8');?></a><?php				
+	  								} 
+								else 
+									{ 
+				?><a href="javascript:;" class="btn-sign" name="subscribe" id="subscribe" onclick="displayDate();" rel="nofollow"><?=mb_strtoupper($parObj->_getLabenames($arrayData,'subscribe','name'),'UTF-8');?></a><?php 
+									}
+	  						}		
+	  					else
+							{ 
+	  							if($workout_cnt>0)
+									{
+	  					?>
+					  		<form name="tt" action="" method="get">
+								<?php 
+									if($objPgm->checkUserPaymentStaus($userid) == 0 && 
+									  !$objPgm->checkProgramSubscribed($userid)):
+								?>
+								<a href="javascript:;" class="btn-sign" name="subscribe" id="subscribe" onclick="showSessionMessage();" rel="nofollow"><?=$parObj->_getLabenames($arrayData,'subscribe','name');?></a>
+								<input name="subscribe" type="hidden" id="subscribe" value="<?=mb_strtoupper($parObj->_getLabenames($arrayData,'subscribe','name'),'UTF-8');?>" />
+								<?php 
+									else:
+								?>
+								<a href="javascript:;" class="btn-sign" name="subscribe" id="subscribe" onclick="document.tt.submit();" rel="nofollow"><?=$parObj->_getLabenames($arrayData,'subscribe','name');?></a>
+								<input name="subscribe" type="hidden" id="subscribe" value="<?=mb_strtoupper($parObj->_getLabenames($arrayData,'subscribe','name'),'UTF-8');?>"/>
+								<?php 
+									endif;
+								?>
+								<input type="hidden" name="program_id" value="<?=base64_encode($program_id)?>" id="program_id" />
+								<input type="hidden" name="todo" value="subscribe" id="todo" />
+							</form>
+								<?php 
+									}  
+							} 
+					}	 
+				?>
+          <!--Program Register button ends-->
+       </nav>
+       
+    </section>
+    </div>
+    <span itemscope itemtype="https://schema.org/ExercisePlan">
+    <section class="goal mid-wrapper" itemprop="alternativeHeadline">
+      <div class="frame">
+         <h2 class="title"><?=mb_strtoupper($parObj->_getLabenames($arrayData,'objective','name'),'UTF-8');?></h2>
+         <p class="description"><?php echo $objGen->_output(trim(strip_tags($data['program_target']))); ?> </p>
+      </div>
+    </section>
+    
+    <section class="ent_description mid-wrapper" itemprop="description">
+      <div class="frame">
+         <p class="title"><?=mb_strtoupper($parObj->_getLabenames($arrayData,'description','name'),'UTF-8');?></p>
+         <p class="description">
+         <?php 
+		 		$goalarray = array();				
+				$data['program_desc']	=	str_replace("<BR STYLE=\"letter-spacing:0px;color:#0B333C;font-size:10px;font-family:'Verdana';\"/>"," ",$data['program_desc']);
+				
+				$goal =$objGen->_output(trim($data['program_desc']));
+				//$goal =strip_tags($objGen->_output(trim($data['program_desc'])));				
+				$goal = str_replace("\n"," ",$goal);
+				$goal = str_replace("<br>"," ",$goal);
+				$goal = str_replace("<BR>"," ",$goal);
+				$goal = str_replace("<br/>"," ",$goal);
+				$goal = str_replace("<BR/>"," ",$goal);
+				$goaltext = $goal;
+				$goals = explode("</DIV>", $goal);
+				//$goals = explode(".", $goal);	
+				if(end($goals)	==	"")
+				{
+					array_pop($goals);
+				}
+				$goalnum = count($goals);
+				
+				if($goalnum > 2){
+					//$goaltext = trim($goals[0])."</DIV>".trim($goals[1]."</DIV>");
+					$goaltext = trim($goals[0]).". ".trim($goals[1]);
+							
+					for($i=2;$i<=$goalnum;$i++){
+						if($goals[$i] != "")
+					 		$goalarray[]=$goals[$i];
+					}
+					$goal_rest = 	implode("</DIV>",$goalarray);
+					$goal_rest.=	"</DIV>";	
+					//$goal_rest = implode(". ",$goalarray);
+				}
+				//For avoiding last spaces
+				
+				echo trim(strip_tags($goaltext));
+				 
+			  if($goal_rest!= "") 
+			  {?>
+				  <span id="toggleText" style="display: none"><?php echo trim(strip_tags($goal_rest));?></span>
+                  
+			  <?php 
+			  	} 
+			  ?></p><a href="javascript:toggle('displayText','toggleText');" id="displayText" class="read"><?=strtoupper($parObj->_getLabenames($arrayData,'readmore','name'));?></a>
+      </div>
+      
+    </section>
+
+    <section class="advice mid-wrapper" itemprop="guideline">
+      <div class="frame">
+         <p class="title"><?=mb_strtoupper($parObj->_getLabenames($arrayData,'provide_t','name'),'UTF-8');?></p>
+         <p class="description">
+		 <?php
+			  	
+				$descarray = array();
+				$data['program_provide']	=	str_replace("<BR STYLE=\"letter-spacing:0px;color:#0B333C;font-size:10px;font-family:'Verdana';\"/>"," ",$data['program_provide']);
+				$desc = $objGen->_output(trim($data['program_provide']));
+				//$desc = strip_tags($objGen->_output(trim($data['program_provide'])));				
+				$desc = str_replace("\n"," ",$desc);
+				$desc = str_replace("<br>"," ",$desc);
+				$desc = str_replace("<BR>"," ",$desc);
+				$desc = str_replace("<br/>"," ",$desc);
+				$desc = str_replace("<BR/>"," ",$desc);
+				$desctext = $desc; 
+				$descs = explode("</DIV>", $desc);
+				//$descs = explode(".", $desc);
+					
+				if(end($descs)	==	"")
+				{
+					array_pop($descs);
+				}				
+				$descnum = count($descs);
+				if($descnum > 2){
+				
+					$desctext = trim($descs[0]).". ".trim($descs[1]);
+						
+					for($i=2;$i<=$descnum;$i++){
+						if(trim($descs[$i]) != "")
+							$descarray[]=$descs[$i];
+					}
+					$desc_rest = 	implode("</DIV>",$descarray);
+					$desc_rest.=	"</DIV>";	
+					//$desc_rest = implode(". ",$descarray);
+				}
+				//For avoiding last spaces
+				
+				echo trim(strip_tags($desctext));
+			  ?>
+			  <?php 
+			  	if($desc_rest!= "") 
+			  	{ ?> 
+					<span id="toggleText2" style="display: none"><?php echo trim(strip_tags($desc_rest));?></span>
+                    
+              <?php 
+			  	} 
+			  ?></p><a href="javascript:toggle('displayText2','toggleText2');" class="read" id="displayText2"> <?=mb_strtoupper($parObj->_getLabenames($arrayData,'readmore','name'),'UTF-8');?></a>
+      </div>
+    </section>
+    </span>
+    <div id="seansWrapper" class="mid-wrapper">      
+     </div>
+     <div id="commentPagn"></div>
+     <?php if(count($slides)>0){ ?>
+      <section class="jw_excercise mid-wrapper" itemscope itemtype="https://schema.org/ExercisePlan">	
+    	<h2> <?=mb_strtoupper(html_entity_decode($parObj->_getLabenames($arrayData,'sliderHead','name')),'UTF-8');?></h2>
+         <div class="clear"></div>
+         <div class="clear"></div>
+          <div class="content_6 content">
+          	<div class="images_container" id="slider"><?=$products?></div>
+          </div>
+   		  </section>
+    <?php } ?>    
+   <!--============================-->
+<?php
+$flexid1	=	urlencode($flexid);
+?>
+<script language="javascript" type="text/javascript">
+loadNavs_NewDesign();
+function loadNavs_NewDesign(){
+		htmlData('program_details_workout_pagination.php','p=1','<?=$flexid1?>','<?=$program_id?>');
+		htmlComment('comment_pagination.php','pg=1','<?=$program_id?>','<?=$workoutflex?>');
+	}
+function questionMHRText(){
+	    jpopup = $('.pop_search').bPopup({	     
+        speed: 200,
+        positionStyle: 'fixed',
+        });
+	}
+</script>
+
+<?php include("footer.php"); ?>

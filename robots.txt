@@ -1,0 +1,4 @@
+User-agent: *
+Sitemap: http://www.jiwok.com/sitemap.xml
+Disallow: *.pdf
+Disallow: *.swf

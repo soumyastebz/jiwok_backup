@@ -1,0 +1,74 @@
+<?php
+session_start();
+require_once 'includeconfig.php';
+include_once("includes/classes/class.testimonials.php");
+include_once("includes/classes/class.homepage.php");
+if($_POST){
+	$lanId          =   $_POST["lanId"];
+	$count          =   $_POST["count"]*8;
+	}else{
+    $lanId          = 1;
+    $count          = 8;
+}
+$objGen     	=	new General();
+$parObj 		= 	new Contents('');
+$objtestimoni	=	new Testimonial($lanId);
+$objHome     	=	new Homepage($lanId);
+$returnData		= 	$parObj->_getTagcontents($xmlPath,'homepage','label');
+$arrayDataHome	= 	$returnData['general'];
+    $returnDataService	= $parObj->_getTagcontents($xmlPath,'services','label');
+	$arrayDataService	= $returnDataService['general'];
+	$returnData		= $parObj->_getTagcontents($xmlPath,'trainingprogram','label');
+	$arrayData		= $returnData['general'];
+	$returnDataList	= $parObj->_getTagcontents($xmlPath,'listprograms','label');
+	$arrayDataList	= $returnDataList['general'];
+	$thisPage		= "testimonial";
+	$start=0;
+    $to=$count;
+    $getAllTestimoni = $objtestimoni->_displayPage('',$lanId,$start,$to);
+    $totNo	=	$objtestimoni->_getTotalCount($searchQuery = '',$lanId);
+        for($i=0;$i<count($getAllTestimoni);$i++){	
+		$image1	= "/home/sites_web/client/newdesign/uploads/testimonials/".$objGen->_output($getAllTestimoni[$i]['user_image']);
+		 	$image	=	"/uploads/testimonials/".$objGen->_output($getAllTestimoni[$i]['user_image']);
+			
+			if(is_file($image1))
+			{ 
+				$image	=	$image;
+			}
+			else
+			{ 
+				$image	=	"images/profile-dummy.png";
+			}
+			$testimonial_by = $objGen->_output($getAllTestimoni[$i]['user_name']);
+
+			$content = substr($objGen->_output($getAllTestimoni[$i]['testimonial_desc']),0, 60);
+			$pos = strrpos($content, " ");
+			if ($pos>0) {
+				$content = substr($content, 0, $pos);
+			}
+	?>
+	  <section itemscope itemtype="https://schema.org/Review" class="evi_D">
+         <figure itemprop="thumbnailUrl">
+<!--
+		     <img alt="jiwok" src="<?=ROOT_FOLDER?>images/img-jiwok_03.jpg">
+-->
+            <!--here width="80" height="76" due to small image size-->
+             <img  width="80" height="76" src="<?php echo $image;?>" alt="user image">
+
+            </figure>
+         <article>
+            <h2 itemprop="itemReviewed" ><?php echo ucfirst(mb_strtolower($content,'UTF-8'));?>&hellip;</h2>
+            <p class="sub-hed" itemprop="author" ><?php echo $testimonial_by;?></p>
+            <p itemprop="reviewBody" ><?php echo nl2br($objGen->_output($getAllTestimoni[$i]['testimonial_desc']));?></p>
+         </article>
+      </section>
+	<?php
+	}
+	?>
+	  <ul class="links">
+	    <li class="freesign"><a OnClick="location.href='<?=ROOT_JWPATH?>userreg1.php'" href="#" ><?=$parObj->_getLabenames($arrayDataHome,'testimonial_signup_button','name')."";?></a></li>
+        <li class="stories"><a href="javascript:selectDetails(<?php echo $_POST["count"]; ?>,'t');"><?=$parObj->_getLabenames($arrayDataHome,'newMoreTxt','name')."";?></a></li>
+      </ul>
+<?php
+exit;
+?>

@@ -1,0 +1,111 @@
+<?php
+session_start();
+include_once('includeconfig.php');
+include_once('./includes/classes/class.member.php');
+include_once('./includes/classes/class.Languages.php');
+include_once("includes/classes/class.discount.php");
+include_once("includes/classes/class.programs.php");
+include_once("includes/classes/class.Payment.php");
+
+//settype( $temptime, double ); // for date add function in general class
+
+// create an object for manage the parsed content 
+$parObj 		=   new Contents('myprofile.php');
+$objGen   		=	new General();
+$dbObj     		=   new DbAction();	
+$objMember		= 	new Member($lanId);
+$objDisc		= 	new Discount($lanId);
+$lanObj 		= 	new Language();	
+$objPgm     	= 	new Programs($lanId);
+$paymentObj		=	new Payment();
+
+if($_SESSION['user']['userId']==''){
+	header('location:login_failed.php?login=failed');
+}else{
+	$userId	=	$_SESSION['user']['userId'];
+}
+	
+if($lanId=="") $lanId=1;
+$returnData		= $parObj->_getTagcontents($xmlPath,'registrationUser','label');
+$arrayData		= $returnData['general'];
+$returnDataProfile		= $parObj->_getTagcontents($xmlPath,'myprofile','label');
+$arrayDataProfile		= $returnDataProfile['general'];
+$returnDataPgm		= $parObj->_getTagcontents($xmlPath,'trainingprogram','label');
+$arrayDataPgm		= $returnDataPgm['general'];
+
+$sql_search  = "select * from payment where payment_userid='$userId' AND ( version='New' OR version='stripe' OR version='polishstripe') AND payment_status='1'";
+$res_search  = $GLOBALS['db']->getAll($sql_search,DB_FETCHMODE_ASSOC);
+$no_of_rows=sizeof($res_search);
+?>
+<?php include("header.php"); ?>
+<div class="frame_inner">
+	  <div class="row-1"><div class="return">
+	  <a href="<?=$backButtonLink?>" class="white"> <?=$parObj->_getLabenames($arrayDataProfile,'newBackTxt','name');?></a>
+	  </div>
+	  <div class="title">
+		  <ul class="bredcrumbs">
+			<li>
+			<?=$parObj->_getLabenames($arrayDataProfile,'newPgeTxt','name');?>
+			:</li>
+			<li><a href="<?=ROOT_JWPATH?>index.php">
+			 <?=$parObj->_getLabenames($arrayDataProfile,'newHmeTxt','name');?>
+			 </a></li>
+			<li>></li>
+			<li><a href="<?=ROOT_JWPATH?>userArea.php">
+		   <?=$parObj->_getLabenames($arrayDataProfile,'newMyAccTxt','name');?>
+			 </a></li>
+			<li>></li>
+			<li><a class="select">
+		   <?=$parObj->_getLabenames($arrayDataPgm,'invoice','name');?>
+		   </a></li>
+		 </ul>
+		<p class="Q"> <?=$parObj->_getLabenames($arrayDataPgm,'invoice','name');?></p>
+			</div>						 
+			</div>
+			 <div class="clear"></div>
+       
+         <div class="downloads">
+            <h3><?=$parObj->_getLabenames($arrayDataPgm,'invoiceCaptionTxt','name');?></h3>
+            <div class="row">
+              <div class="content2">
+               <span class="name"># &nbsp;&nbsp;<?=$parObj->_getLabenames($arrayDataPgm,'invoiceHead1','name');?></span>
+               </div>
+            </div> 
+            <div class="row">
+             <?php if($no_of_rows	>	0):
+		   			$i	=	1;
+					$filename = 'pdfgenerate/user pdf/'.$userId."_".$resDb['expiry_date'].".pdf";	
+					//$filename 			= '/home/sites_web/client/newdesign.back/pdfgenerate/user pdf/'.$userId."_";
+					$filenameCron = 'includes/classes/Payment/pdfgenerate/user pdf/'.$userid."_".$resDb['expiry_date'].".pdf";
+					//$filenameCron 		= '/home/sites_web/client/newdesign.back/includes/classes/Payment/pdfgenerate/user pdf/'.$userId."_";
+					//For brands
+					$brandFilename 		= 	'/home/sites_web/client/www.jiwok.com/pdfgenerate/user pdf/'.$userId."_";
+					$brandFilenameCron 	= 	'/home/sites_web/client/www.jiwok.com/includes/classes/Payment/pdfgenerate/user pdf/'.$userId."_";
+					foreach($res_search as $result)
+						{ ?>
+							 <div class="content2" style="padding: 12px 0 0 0px;">
+              
+               <span class="name" style="padding: 6px 0 22px 33px;"><?=$i?>&nbsp;&nbsp;&nbsp;&nbsp;<?=date("d-m-Y", strtotime($result['payment_date']));?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+							<?php 	$file1		=	$filename.$result['payment_date'].".pdf";
+								  	$file2		=	$filenameCron.$result['payment_date'].".pdf";
+								  	$BrandFile1	=	$brandFilename.$result['payment_date'].".pdf";
+									$BrandFile2	=	$brandFilenameCron.$result['payment_date'].".pdf";	
+							//if(file_exists($file1)	||	file_exists($BrandFile1)):  
+							?>
+                            <span class="button"><a href="<?=ROOT_JWPATH?>pdfDownload.php?file=<?=$userId."_".$result['payment_date'].".pdf&from=1"?>"><input type="button" value="<?=$parObj->_getLabenames($arrayDataPgm,'downld','name');?>"></a></span>
+                            <?php 
+                            // endif;
+							if(file_exists($file2)	||	file_exists($BrandFile2)):?>
+                            <span class="button"><a href="<?=ROOT_JWPATH?>pdfDownload.php?file=<?=$userId."_".$result['payment_date'].".pdf&from=2"?>"><?=$parObj->_getLabenames($arrayDataPgm,'downld','name');?></a></span>
+                            <?php endif;
+							?>
+                            <br/>
+			<?php	$i++;}
+						
+				 else:?>
+				 No downloads
+		<?php	 endif;?>     
+            </div>
+         </div>
+     </div>
+<?php include("footer.php"); ?>

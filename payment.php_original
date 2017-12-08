@@ -1,0 +1,210 @@
+<?php
+session_start();
+
+ini_set('display_errors',0);
+error_reporting(E_ERROR | E_PARSE);
+
+include_once('includeconfig.php');
+include_once("includes/classes/class.service.php");
+include_once("includes/classes/class.homepage.php");
+include_once('includes/classes/class.CMS.php');
+
+if($lanId=="")  $lanId=1;
+
+$objGen     	= new General();	 
+$objService		= new Service();
+$objHome     	= new Homepage();
+$parObj 		= new Contents('services_details.php');
+$objCMS    		= new CMS($lanId);
+
+$limitFrom		=	0;
+$upperLimit		=	10;
+
+//get the testimonial; title for displaying in homepage
+
+$getService	=	$objService->_getAllContent($lanId);
+//collecting data from the xml for the static contents
+$returnData		= $parObj->_getTagcontents($xmlPath,'payments','label');
+$arrayData		= $returnData['general'];
+
+$returnDataOffer		= $parObj->_getTagcontents($xmlPath,'offerSection_NewDesign','label');
+$arrayDataOffer		= $returnDataOffer['general'];
+
+// for service background section
+$getHomeId	=	0;
+if(isset($_SESSION['home']['HomeId']))
+	$getHomeId			=	$_SESSION['home']['HomeId'];
+else		
+	$_SESSION['home']['HomeId']	=	$getHomeId;
+	
+
+if($getHomeId <> 0){
+	$getHomeContent		=	$objHome->_displayHomeContent($getHomeId,$lanId);
+	$bgImage			=	"./uploads/homepage/".$getHomeContent[0]['service_image'];
+}
+
+if($getHomeId == 0){
+	$bgImage			=	"./images/services-image.jpg";
+}
+
+?>
+<?php include("header.php"); ?>
+<?php include("menu.php"); ?>
+<style>
+	.offer_section{
+		width:100%;
+		margin-top:15px;
+		margin-bottom:15px;
+		height:auto;	
+	}
+	.offer_section .rights{
+    	float: right;
+    	padding-right: 55px;
+    	width: 418px;		
+	}
+	.offer_section .rights .sign-up-col{
+		padding: 26px 26px;	
+	}
+	#container #wraper_inner .wraper_msg{
+		background: url("../images/shade-right.jpg") repeat-y scroll right top #F8F8F8;
+		margin: 20px 0;
+		padding: 60px 0 20px 10px;
+		position: relative;	
+	}
+	
+	#container #wraper_inner .wraper_msg .heading-top {
+		background: url("../images/heding_bg4.png") no-repeat scroll 0 0 transparent;
+		color: #004665;
+		font: 17px "Trebuchet MS";
+		height: 49px;
+		left: 0;
+		padding: 9px 0 0 57px;
+		position: absolute;
+		top: -1px;
+		width: 882px;
+	}	
+	#container #wraper_inner .wraper_msg .btm {
+		background: url("../images/shade-btm1.png") no-repeat scroll 0 0 transparent;
+		bottom: -9px;
+		height: 10px;
+		position: absolute;
+		right: 3px;
+		width: 932px;
+		z-index: 10;
+	}	
+	#container #wraper_inner .wraper_msg .container {
+		padding: 0 25px;
+	}
+	#container #wraper_inner .wraper_msg .container h2 {
+		color: #FF5C00;
+		font: bold 15px Arial,Helvetica;
+		margin: 0 0 20px;
+	}	
+</style>
+<div id="container">
+  <div id="wraper_inner">
+    <div class="breadcrumbs">
+      <ul>
+        <li>
+          <?=$parObj->_getLabenames($arrayData,'newPageTxt','name');?>
+          :</li>
+        <li><a href="<?=ROOT_JWPATH?>index.php">
+          <?=$parObj->_getLabenames($arrayData,'newHmeTxt','name');?>
+          </a></li>
+        <li>></li>
+        <li><a class="select">
+          <?=$parObj->_getLabenames($arrayData,'newHeadTxt','name');?>
+          </a></li>
+      </ul>
+    </div>
+    <div class="heading"><span class="name">
+      <?=$parObj->_getLabenames($arrayData,'newHeadTxt','name');?>
+      </span> <span class="date"><strong>&gt; </strong><a href="<?=$backButtonLink?>" class="white">
+      <?=$parObj->_getLabenames($arrayData,'newBackTxt','name');?>
+      </a></span>
+    </div>
+	
+	<div class="clear"></div>
+	<div class="offer_section" >
+		<div class="left">
+		<div class="sign-up-col">
+		   <div class="corner"></div>
+		   <div class="corner-rit"></div>
+		   <a href="<?=ROOT_JWPATH?>userreg1.php" class="sign"><?=$parObj->_getLabenames($arrayData,'newSignUpCptnTxt','name');?> </a><br />
+		   <em><?=$parObj->_getLabenames($arrayData,'newSignUpBtmCptnTxt','name');?></em>
+		</div>
+		</div>
+		
+		<div class="rights">
+		<div class="sign-up-col">
+		   <div class="corner"></div>
+		   <div class="corner-rit"></div>
+		   <a href="<?=ROOT_JWPATH?>payment_renew.php" class="sign"><?=$parObj->_getLabenames($arrayData,'paymentrenewCptnTxt','name');?> </a>
+		</div>		
+		</div>
+	</div>
+	
+	<div class="clear"></div>
+	
+	 
+   	
+    <?php $regSer	=	$objCMS->_getContent($b = 'PAYMENT_CMS1', $lanId); ?>
+    <div class="wraper_msg">
+      <div class="heading-top">
+        <?=$objGen->_output($regSer['content_display_title']);?>
+      </div>
+      <div class="btm">&nbsp;</div>
+      <div class="container">
+        <?=$objGen->_output($regSer['content_body']);?>
+      </div>
+    </div>
+	
+    <?php include("offerSection_NewDesig_payment_pl.php"); ?>
+	<div class="clear"></div>	
+	<div class="offer_section" >
+		<div class="left">
+		<div class="sign-up-col">
+		   <div class="corner"></div>
+		   <div class="corner-rit"></div>
+		   <a href="<?=ROOT_JWPATH?>userreg1.php" class="sign"><?=$parObj->_getLabenames($arrayData,'newSignUpCptnTxt','name');?> </a><br />
+		   <em><?=$parObj->_getLabenames($arrayData,'newSignUpBtmCptnTxt','name');?></em>
+		</div>
+		</div>
+		
+		<div class="rights">
+		<div class="sign-up-col">
+		   <div class="corner"></div>
+		   <div class="corner-rit"></div>
+		   <a href="<?=ROOT_JWPATH?>payment_renew.php" class="sign"><?=$parObj->_getLabenames($arrayData,'paymentrenewCptnTxt','name');?> </a>
+		</div>		
+		</div>
+	</div>
+	<div class="clear"></div>	
+	<?php $regSer	=	$objCMS->_getContent($b = 'PAYMENT_CMS2', $lanId); ?>
+    <div class="wraper_msg">
+      <div class="heading-top">
+        <?=$objGen->_output($regSer['content_display_title']);?>
+      </div>
+      <div class="btm">&nbsp;</div>
+      <div class="container">
+        <?=$objGen->_output($regSer['content_body']);?>
+      </div>
+    </div>	
+	<?php $regSer	=	$objCMS->_getContent($b = 'PAYMENT_CMS3', $lanId); ?>
+    <div class="wraper_msg">
+      <div class="heading-top">
+        <?=$objGen->_output($regSer['content_display_title']);?>
+      </div>
+      <div class="btm">&nbsp;</div>
+      <div class="container">
+        <?=$objGen->_output($regSer['content_body']);?>
+      </div>
+    </div>		
+	
+	
+  </div>
+</div>
+<?php include("footer.php"); ?>
+<script type="text/javascript">
+swfobject.registerObject("FlashID");
+</script>

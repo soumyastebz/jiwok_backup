@@ -1,0 +1,49 @@
+<?php
+
+session_start();
+
+include_once('includeconfig.php');
+include_once("includes/classes/class.programs.php");
+if($lanId=="")
+   $lanId=1;
+$objPgm     	 = new Programs($lanId);
+if($_POST['type']=="add"){
+	
+
+	$userid    		    				= $_SESSION['user']['userId'];
+	$workOrder  						= trim($_REQUEST['workOrder']);
+	$workDate          				    = trim($_REQUEST['workDate']);
+	$workout_flexid_cal  			 	= str_replace(' ','+',trim($_REQUEST['workout_flexid_cal']));
+	$insArray 							= array();
+	$insArray['feedback_id']			= '';
+    $insArray['feedback_subject']		= '';
+	$insArray['feedback_desc'] 		    = addslashes(trim($_REQUEST['comment_text1']));
+	$insArray['feedback_datetime'] 	    = date('Y-m-d H:i:s');
+	$insArray['program_id'] 			= addslashes(trim($_REQUEST['program_id']));
+	$wrkFlx  							= str_replace(' ','+',trim($_REQUEST['workout_flexid']));
+	$insArray['workout_flex_id'] 		= addslashes(trim($wrkFlx));
+	$insArray['user_id'] 				= $userid;
+	$insArray['public_status'] 		    = '2';
+	$insArray['lang_id'] 				= $_REQUEST['lang_cid'];
+	
+
+	
+	echo $commantTxt					= $_REQUEST['comment_text1'];
+	$_SESSION["refComment"]				= base64_encode($commantTxt);
+	
+	if($_REQUEST["postFB"]==1){
+		$_SESSION["refCommentPost"]		=	"1";
+	}else{
+		$_SESSION["refCommentPost"]		=	"0";
+	}
+	$res 								= $objPgm->_insertDetails($insArray,"feedback");
+	
+	
+	
+	//$msg = $parObj->_getLabenames($arrayData,'msgaddcomment','name');
+	//header("Location:historical.php?action=commented&pgm_id=".base64_encode(trim($_REQUEST['program_id']))."&workoutFlexId=".$workout_flexid_cal."&ccess=Y29tc2Vzcw==&msg=".$msg);
+
+}
+exit;
+
+?>

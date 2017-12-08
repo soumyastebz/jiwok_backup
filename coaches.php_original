@@ -1,0 +1,109 @@
+<?php
+session_start();
+
+include_once('includeconfig.php');
+include_once("includes/classes/class.programs.php");
+include_once('includes/classes/class.CMS.php');
+include_once('includes/classes/class.coaches.php');
+
+if($lanId=="") $lanId=1;
+
+$objGen     	= new General();
+$objTraining	= new Programs($lanId);
+$parObj 		= new Contents('coaches.php');
+$objCMS			= new CMS($lanId);
+$objCoaches		= new coaches($lanId);
+
+//collecting data from the xml for the static contents
+$returnData		= $parObj->_getTagcontents($xmlPath,'coachesNew','label');
+$arrayData		= $returnData['general'];
+
+//Retreaving Coaches Categories
+if($lanId==5)
+$coachesCatData=$objCoaches->_getAllContent($lanId,'coach_category','DESC');
+else
+$coachesCatData=$objCoaches->_getAllContent($lanId);
+?>
+<?php include("header.php"); ?>
+<?php include("menu.php"); ?>
+<style>
+.sign-up-col {
+    margin-top: 30px;
+}
+</style>
+<div id="container">
+  <div id="wraper_inner">
+    <div class="breadcrumbs">
+      <ul>
+        <li>
+          <?=$parObj->_getLabenames($arrayData,'newHmeTxt','name');?>
+          :</li>
+        <li><a href="<?=ROOT_JWPATH?>index.php">
+          <?=$parObj->_getLabenames($arrayData,'newIndxTxt','name');?>
+          </a></li>
+        <li>></li>
+        <li><a href="#" class="select">
+          <?=$parObj->_getLabenames($arrayData,'newPgeTxt','name');?>
+          </a></li>
+      </ul>
+    </div>
+    <div class="heading"><span class="name">
+      <?=$parObj->_getLabenames($arrayData,'newHeadTxt','name');?>
+      </span> <span class="date"><strong>&gt; </strong><a href="<?=$backButtonLink?>" class="white">
+      <?=$parObj->_getLabenames($arrayData,'newBackTxt','name');?>
+      </a></span></div>
+    <div class="col-3">
+      <?php
+		$contentTitle	= 'COACHES_TOP';
+		$contents 		= $objCMS->_getContent($contentTitle, $lanId);
+		echo $contents['content_body']; 
+	?>
+      <div class="clear"></div>
+    </div>
+    <div id="guides">
+      <ul id="guide">
+        <script type="text/javascript">
+			var catCount=0;
+			<?php if(count($coachesCatData)>0){ ?>
+				catCount=<?php echo count($coachesCatData); ?>;  // Setting the number of categories
+				$(document).ready(function(){
+					selectCat(0);  // Select the first category on page load
+				});
+			<?php } ?>
+		</script>
+        <?php 
+		$i=0;
+		foreach($coachesCatData as $catData){ 
+		?>
+				<li><a href="javascript:selectCat('<?php echo $i; ?>');" id="catId_<?php echo $i;?>" class="">&gt; <?php echo stripslashes($catData["coach_category"]); ?></a></li>
+		<?php
+		$i+=1;
+		}
+		?>
+      </ul>
+      <?php 
+		$i=0;
+		foreach($coachesCatData as $catData){ 
+		?>
+			  <div class="right" id="catCntntHldr_<?php echo $i; ?>" style="display:none;"> <?php echo stripslashes($catData["coach_category_description"]);?> </div>
+			  <?php
+			$i+=1;
+		}
+		?>
+      <div class="clear"></div>
+    </div>
+    <div class="col-4">
+      <?php 
+		$contentTitle	= 'COACHES_BOTTOM';
+		$contents 		= $objCMS->_getContent($contentTitle, $lanId);
+		if($_SERVER['HTTP_HOST'] == "www.jiwok.com.jiwok-wbdd2.najman.lbn.fr")
+		{ 
+			$contents['content_body'] 		 =	str_replace("http://www.jiwok.com","http://www.jiwok.com.jiwok-wbdd2.najman.lbn.fr",$contents['content_body']);
+		}
+		echo $contents['content_body']; 
+	?>
+      <div class="clear"></div>
+    </div>
+  </div>
+</div>
+<?php include("footer.php"); ?>

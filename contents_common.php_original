@@ -1,0 +1,124 @@
+<?php
+switch($contentTitle){
+	case 'press':
+		$searchPath	=	$parObj->_getLabenames($arrayData,"searchPath","name");
+		$homeName	=	$parObj->_getLabenames($arrayData,"homeName","name");
+		$newPgeTxt	=	$contents['content_display_title'];
+		$newBackTxt	=	$parObj->_getLabenames($arrayData,"newBackTxt","name");
+		$homeUrl	=	ROOT_JWPATH.'index.php';
+	break;
+	case 'terms':
+		$searchPath	=	$parObj->_getLabenames($arrayData,"searchPath","name");
+		$homeName	=	$parObj->_getLabenames($arrayData,"homeName","name");
+		$newPgeTxt	=	$contents['content_display_title'];
+		$newBackTxt	=	$parObj->_getLabenames($arrayData,"newBackTxt","name");
+		$homeUrl	=	ROOT_JWPATH.'index.php';
+	break;
+	case 'TERMS_A':
+		$searchPath	=	$parObj->_getLabenames($arrayData,"searchPath","name");
+		$homeName	=	$parObj->_getLabenames($arrayData,"homeName","name");
+		$newPgeTxt	=	$contents['content_display_title'];
+		$newBackTxt	=	$parObj->_getLabenames($arrayData,"newBackTxt","name");
+		$homeUrl	=	ROOT_JWPATH.'index.php';
+	break;
+	case 'TERMS_B':
+		$searchPath	=	$parObj->_getLabenames($arrayData,"searchPath","name");
+		$homeName	=	$parObj->_getLabenames($arrayData,"homeName","name");
+		$newPgeTxt	=	$contents['content_display_title'];
+		$newBackTxt	=	$parObj->_getLabenames($arrayData,"newBackTxt","name");
+		$homeUrl	=	ROOT_JWPATH.'index.php';
+	break;
+	case 'TERMS_C':
+		$searchPath	=	$parObj->_getLabenames($arrayData,"searchPath","name");
+		$homeName	=	$parObj->_getLabenames($arrayData,"homeName","name");
+		$newPgeTxt	=	$contents['content_display_title'];
+		$newBackTxt	=	$parObj->_getLabenames($arrayData,"newBackTxt","name");
+		$homeUrl	=	ROOT_JWPATH.'index.php';
+	break;
+	case 'partners':
+		$searchPath	=	$parObj->_getLabenames($arrayData,"searchPath","name");
+		$homeName	=	$parObj->_getLabenames($arrayData,"homeName","name");
+		$newPgeTxt	=	$contents['content_display_title'];
+		$newBackTxt	=	$parObj->_getLabenames($arrayData,"newBackTxt","name");
+		$homeUrl	=	ROOT_JWPATH.'index.php';
+	break;
+	case 'job':
+		$searchPath	=	$parObj->_getLabenames($arrayData,"searchPath","name");
+		$homeName	=	$parObj->_getLabenames($arrayData,"homeName","name");
+		$newPgeTxt	=	$contents['content_display_title'];
+		$newBackTxt	=	$parObj->_getLabenames($arrayData,"newBackTxt","name");
+		$homeUrl	=	ROOT_JWPATH.'index.php';
+	break;
+	case 'contactus':
+		$searchPath	=	$parObj->_getLabenames($arrayData,"searchPath","name");
+		$homeName	=	$parObj->_getLabenames($arrayData,"homeName","name");
+		$newPgeTxt	=	$contents['content_display_title'];
+		$newBackTxt	=	$parObj->_getLabenames($arrayData,"newBackTxt","name");
+		$homeUrl	=	ROOT_JWPATH.'index.php';
+	break;
+	default:
+		$contentTitle	=	base64_decode($_REQUEST['title']);// get title form the request	
+		$contents 		= 	$objCMS->_getContent($contentTitle,$lanId);//get contents according to the title
+		$searchPath		=	$parObj->_getLabenames($arrayData,"searchPath","name");
+		$homeName		=	$parObj->_getLabenames($arrayData,"homeName","name");
+		$newPgeTxt		=	$contents['content_display_title'];
+		$newBackTxt		=	$parObj->_getLabenames($arrayData,"newBackTxt","name");
+		$homeUrl		=	ROOT_JWPATH.'index.php';
+	break;
+}
+
+$header='<div class="breadcrumbs">
+		  <ul>
+			<li>'.$searchPath.' :</li>
+			<li><a href="'.$homeUrl.'">'.$homeName.'</a></li>
+			<li>></li>
+			<li><a href="#" class="select">'.$newPgeTxt.'</a></li>
+		  </ul>
+		</div>';
+?>
+<?php $newHeadTxt=$contents['content_display_title']; ?>
+<div id="container">
+  <div id="wraper_inner">
+    <?=$header?>
+	<div class="heading"><span class="name"><?php echo $newHeadTxt; ?></span> <span class="date"><strong>&gt; </strong><a href="<?=$backButtonLink?>" class="white"><?php echo $newBackTxt; ?></a></span></div>
+	
+	<?php if($lanId==5 && $contentTitle== 'TERMS_A')
+	{
+	
+	?>
+    	<div align="center" style="border:thick solid; width:80px; float:right; margin:2px"><a href="" target="_self" id="prints" >Drukuj</a> </div>
+		<div align="center" style="border:thick solid; width:80px; float:right; margin:2px"><a href="terms_download.php?id=A" target="_self" >Pobierz</a> </div>
+	<?php 	
+	}
+	elseif($lanId==5 && $contentTitle== 'TERMS_B')
+	{
+	
+	?>
+    <div align="center" style="border:thick solid; width:80px; float:right; margin:2px"><a href="" target="_self" id="prints" >Drukuj</a> </div>
+    <div align="center" style="border:thick solid; width:80px; float:right; margin:2px"><a href="terms_download.php?id=B" target="_self" >Pobierz</a> </div>
+	<?php 	
+	}
+	elseif($lanId==5 && $contentTitle== 'TERMS_C')
+	{
+	
+	?>
+    <div align="center" style="border:thick solid; width:80px; float:right; margin:2px"><a href="" target="_self" id="prints" >Drukuj</a> </div>
+    <div align="center" style="border:thick solid; width:80px; float:right; margin:2px"><a href="terms_download.php?id=C" target="_self" >Pobierz</a> </div>
+	<?php 	
+	}
+	?>
+	<div id="divToPrint"><?php echo $contents['content_body']; ?></div>
+
+  </div>
+</div>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>-->
+<script type="text/javascript" src="jquery/jquery-1.4.3.min.js"></script>
+<script src="jquery/jquery.jqprint-0.3.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+$(function() {
+                $("#prints").click( function() {
+				    $('#divToPrint').jqprint();
+                    return false;
+                });
+             });
+</script>

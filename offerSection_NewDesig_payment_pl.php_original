@@ -1,0 +1,364 @@
+<?php
+ini_set('display_errors',1);
+error_reporting(E_ERROR | E_PARSE);
+?>
+<style>
+
+	.paymentDesc,#paymentDescNew{
+		color:#000000 !important;
+		font-size: 13px !important;
+	}
+	ul#billing li .discount_1 {
+   	    font-size: 10px !important;
+	}
+	.regulations {
+    	color: #000000;
+	}
+	
+	ul#billing li.blue table tr td #xAmt {
+		font-size: 20px !important;
+	}
+	ul#billing li.ylow table tr td #xAmt {
+		font-size: 20px !important;
+	}
+	
+</style>
+<?php if($lanId == 5) { ?>
+<style> 
+.offer_section .right .voucher{padding-bottom:26px;height:203px;background:url("images/voucher_pl.png") no-repeat 0 0;} 
+</style>
+<?php } else { ?>
+<style> 
+.offer_section .right .voucher{padding-bottom:26px;height:203px;background:url("images/voucher.jpg") no-repeat 0 0;} 
+</style>
+<?php } 
+$returnDataOffer		= $parObj->_getTagcontents($xmlPath,'offerSection_NewDesign','label');
+$arrayDataOffer		= $returnDataOffer['general'];
+
+$returnData_new				=	$parObj->_getTagcontents($xmlPath,'new_payment','label');
+$arrayData_new1			= 	$returnData_new['general'];
+
+
+//By Dileep.E on 01.10.11
+//For the new payment plan listing
+//For multi language implimentation
+if($lanId == 3 || $lanId	==	4)
+	$planLanguage	=	2;	
+else
+	$planLanguage	=	$lanId;
+$selectQuery  = "select * from jiwok_payment_plan where plan_status=1 and  plan_currency='".$planLanguage."'";
+$result 		= 	$GLOBALS['db']->getAll($selectQuery,DB_FETCHMODE_ASSOC);
+$i=0;
+foreach($result as $key=>$value)
+{
+	if($value['plan_id']==1)
+	{	
+		$plan1['month_amount']	=	$value['plan_month_amount'];
+		$plan1['plan_amount']	=	$value['plan_amount'];
+		$plan1['plan_discount']	=	$value['plan_discount'];	
+	}
+	if($value['plan_id']==2)
+	{	
+		$plan2['month_amount']	=	$value['plan_month_amount'];
+		$plan2['plan_amount']	=	$value['plan_amount'];
+		$plan2['plan_discount']	=	$value['plan_discount'];	
+	}
+	if($value['plan_id']==3)
+	{	
+		$plan3['month_amount']	=	$value['plan_month_amount'];
+		$plan3['plan_amount']	=	$value['plan_amount'];
+		$plan3['plan_discount']	=	$value['plan_discount'];	
+	}
+	if($value['plan_id']==6)
+	{	
+		$plan6['month_amount']	=	$value['plan_month_amount'];
+		$plan6['plan_amount']	=	$value['plan_amount'];
+		$plan6['plan_discount']	=	$value['plan_discount'];	
+	}
+	if($value['plan_id']==12)
+	{	
+		$plan12['month_amount']	=	$value['plan_month_amount'];
+		$plan12['plan_amount']	=	$value['plan_amount'];
+		$plan12['plan_discount']	=	$value['plan_discount'];	
+	}
+}
+//Ends
+
+?>
+<div class="offer_section">
+  <div class="left">
+    <?php
+    if($lanId	==	5)
+    {?>
+    <ul id="billing">
+      <?php   if(sizeof($plan12) > 0){ ?>
+      <li class="ylow">
+        <div class="corner"></div>
+        <table width="327" border="0" cellspacing="2" cellpadding="0">
+          <tr>
+            <td width="20" align="left" valign="middle"></td>
+            <td width="301"><span style="color:#FFFFFF;font:bold 22px Arial,Helvetica;">
+              <?=$parObj->_getLabenames($arrayDataOffer,'offer1','name');?>: <?=$plan12['plan_amount'].$parObj->_getLabenames($arrayDataOffer,'currency','name');?>
+              </span> <br/>
+              <div class="paymentDesc"> <span style="color:#000000;font:bold italic 20px 'Trebuchet MS';">
+                <?=$plan12['month_amount'].$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name').'/'.$parObj->_getLabenames($arrayDataOffer,'newMonthsTxt','name');?>
+                <span style="color:#000000;font:bold italic 20px 'Trebuchet MS'; text-decoration:line-through;">
+                <?=$parObj->_getLabenames($arrayDataOffer,'actualPaymentAmount','name').$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name');?>
+                </span> </span> </div></td>
+          </tr>
+        </table>
+        <div class="discount_1"><strong>-<?=$plan12['plan_discount']?>%</strong><br />
+          <span class="oferText" style="font-size:11px;">
+          <?=$parObj->_getLabenames($arrayDataOffer,'newOfferCapt','name');?>
+          </span> </div>
+      </li>
+      <?php }
+      if(sizeof($plan6) > 0){ ?>
+      <li class="blue">
+        <div class="corner"></div>
+        <table width="327" border="0" cellspacing="2" cellpadding="0">
+          <tr>
+            <td width="20" align="left" valign="middle"></td>
+            <td width="301"><span style="color:#FFFFFF;font:bold 22px Arial,Helvetica;">
+              <?=$parObj->_getLabenames($arrayDataOffer,'offer2','name');?>: <?=$plan6['plan_amount'].$parObj->_getLabenames($arrayDataOffer,'currency','name');?>
+              </span> <br/>
+              <div class="paymentDesc"> <span style="color:#000000;font:bold italic 20px 'Trebuchet MS';">
+                <?=$plan6['month_amount'].$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name').'/'.$parObj->_getLabenames($arrayDataOffer,'newMonthsTxt','name');?>
+                <span style="color:#000000;font:bold italic 20px 'Trebuchet MS'; text-decoration:line-through;">
+                <?=$parObj->_getLabenames($arrayDataOffer,'actualPaymentAmount','name').$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name');?>
+                </span> </span> </div></td>
+          </tr>
+        </table>
+        <div class="discount_2"><strong>-<?=$plan6['plan_discount']?>%</strong><br />
+          <span class="oferText">
+          <?=$parObj->_getLabenames($arrayDataOffer,'newOfferCapt','name');?>
+          </span> </div>
+      </li>
+      <?php }
+	  if(sizeof($plan3) > 0){?>
+      <li class="blue">
+        <div class="corner"></div>
+        <div class="corner-rit"></div>
+        <table width="327" border="0" cellspacing="2" cellpadding="0">
+          <tr>
+            <td width="20" align="left" valign="middle"></td>
+            <td width="301"><span style="color:#FFFFFF;font:bold 22px Arial,Helvetica;">
+              <?=$parObj->_getLabenames($arrayDataOffer,'offer3','name');?>: <?=$plan3['plan_amount'].$parObj->_getLabenames($arrayDataOffer,'currency','name');?>
+              </span> <br/>
+              <div class="paymentDesc"> <span style="color:#000000;font:bold italic 20px 'Trebuchet MS';">
+                <?=$plan3['month_amount'].$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name').'/'.$parObj->_getLabenames($arrayDataOffer,'newMonthsTxt','name');?>
+                <span style="color:#000000;font:bold italic 20px 'Trebuchet MS'; text-decoration:line-through;">
+                <?=$parObj->_getLabenames($arrayDataOffer,'actualPaymentAmount','name').$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name');?>
+                </span> </span> </div></td>
+          </tr>
+        </table>
+        <div class="discount_2"><strong>-<?=$plan3['plan_discount']?>%</strong><br />
+          <span class="oferText">
+          <?=$parObj->_getLabenames($arrayDataOffer,'newOfferCapt','name');?>
+          </span> </div>
+      </li>
+      <?php }		 
+		  if(sizeof($plan1) > 0){?>
+      <li class="blue">
+        <div class="corner"></div>
+        <div class="corner-rit"></div>
+        <table width="378" border="0" cellspacing="2" cellpadding="0">
+          <tr>
+            <td width="20" align="left" valign="middle"></td>
+            <td width="348"><span style="color:#FFFFFF;font:bold 22px Arial,Helvetica;">
+              <?=$parObj->_getLabenames($arrayDataOffer,'offer4','name');?>
+              (
+              <?=$parObj->_getLabenames($arrayData_new1,'planNewTxt','name');?>
+              ): </span> <br/>
+              <div class="paymentDesc"> <span style="color:#000000;font:bold italic 20px 'Trebuchet MS';">
+                <?=$plan1['month_amount'].$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name').'/'.$parObj->_getLabenames($arrayDataOffer,'singleMonth','name');?>
+                </span> </div></td>
+          </tr>
+        </table>
+      </li>
+      <?php }?>
+    </ul>
+    <?php
+	}
+	
+	else
+	{?>
+    <ul id="billing">
+      <?php   if(sizeof($plan12) > 0){ ?>
+      <li class="ylow">
+        <div class="corner"></div>
+        <table width="327" border="0" cellspacing="2" cellpadding="0">
+          <tr>
+            <td width="20" align="left" valign="middle"></td>
+            <td width="301"><span class="xxxNew">
+              <?=$parObj->_getLabenames($arrayDataOffer,'offer1','name');?>: </span> <span class="x" id="xAmt">
+              <?=$plan12['month_amount'];?>
+              </span><span class="xxxxNew">
+              <?=$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name');?>
+              /
+              <?=$parObj->_getLabenames($arrayDataOffer,'newMonthsTxt','name');?>
+              </span><br/>
+              <div class="paymentDesc"> <span class="x" id="paymentDescNew">
+                <?=$parObj->_getLabenames($arrayDataOffer,'actualPaymentTxt','name')." ";?>
+                </span><span class="xstrike" id="paymentDescNew">
+                <?=$parObj->_getLabenames($arrayDataOffer,'actualPaymentAmount','name').$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name');?>
+                </span> <br/>
+                <?=$parObj->_getLabenames($arrayDataOffer,'invoicedetails1','name')." ".$plan12['plan_amount']." ".$parObj->_getLabenames($arrayDataOffer,'currency','name');?>
+              </div></td>
+          </tr>
+        </table>
+        <div class="discount_1"><strong>-<?=$plan12['plan_discount']?>%</strong><br />
+          <span class="oferText">
+          <?=$parObj->_getLabenames($arrayDataOffer,'newOfferCapt','name');?>
+          </span> </div>
+      </li>
+      <?php }
+      if(sizeof($plan6) > 0){ ?>
+      <li class="blue">
+        <div class="corner"></div>
+        <table width="327" border="0" cellspacing="2" cellpadding="0">
+          <tr>
+            <td width="20" align="left" valign="middle"></td>
+            <td width="301"><span class="xxxNew">
+              <?=$parObj->_getLabenames($arrayDataOffer,'offer2','name');?>: </span> <span class="x" id="xAmt">
+              <?=$plan6['month_amount'];?>
+              </span><span class="xxxxNew">
+              <?=$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name');?>
+              /
+              <?=$parObj->_getLabenames($arrayDataOffer,'newMonthsTxt','name');?>
+              </span><br/>
+              <div class="paymentDesc"> <span class="x" id="paymentDescNew">
+                <?=$parObj->_getLabenames($arrayDataOffer,'actualPaymentTxt','name')." ";?>
+                </span><span class="xstrike" id="paymentDescNew">
+                <?=$parObj->_getLabenames($arrayDataOffer,'actualPaymentAmount','name').$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name');?>
+                </span> <br/>
+                <?=$parObj->_getLabenames($arrayDataOffer,'invoicedetails1','name')." ".$plan6['plan_amount']." ".$parObj->_getLabenames($arrayDataOffer,'currency','name');?>
+              </div></td>
+          </tr>
+        </table>
+        <div class="discount_2"><strong>-<?=$plan6['plan_discount']?>%</strong><br />
+          <span class="oferText">
+          <?=$parObj->_getLabenames($arrayDataOffer,'newOfferCapt','name');?>
+          </span> </div>
+      </li>
+      <?php }
+	  if(sizeof($plan3) > 0){?>
+      <li class="blue">
+        <div class="corner"></div>
+        <div class="corner-rit"></div>
+        <table width="327" border="0" cellspacing="2" cellpadding="0">
+          <tr>
+            <td width="20" align="left" valign="middle"></td>
+            <td width="301"><span class="xxxNew">
+              <?=$parObj->_getLabenames($arrayDataOffer,'offer3','name');?>: </span> <span class="x" id="xAmt">
+              <?=$plan3['month_amount'];?>
+              </span><span class="xxxxNew">
+              <?=$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name');?>
+              /
+              <?=$parObj->_getLabenames($arrayDataOffer,'newMonthsTxt','name');?>
+              </span><br/>
+              <div class="paymentDesc"> <span class="x" id="paymentDescNew">
+                <?=$parObj->_getLabenames($arrayDataOffer,'actualPaymentTxt','name')." ";?>
+                </span><span class="xstrike" id="paymentDescNew" >
+                <?=$parObj->_getLabenames($arrayDataOffer,'actualPaymentAmount','name').$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name');?>
+                </span> <br/>
+                <?=$parObj->_getLabenames($arrayDataOffer,'invoicedetails1','name')." ".$plan3['plan_amount']." ".$parObj->_getLabenames($arrayDataOffer,'currency','name');?>
+              </div></td>
+          </tr>
+        </table>
+        <div class="discount_2"><strong>-<?=$plan3['plan_discount']?>%</strong><br />
+          <span class="oferText">
+          <?=$parObj->_getLabenames($arrayDataOffer,'newOfferCapt','name');?>
+          </span> </div>
+      </li>
+      <?php }
+		  if(sizeof($plan2) > 0){?>
+      <li class="blue">
+        <div class="corner"></div>
+        <div class="corner-rit"></div>
+        <table width="327" border="0" cellspacing="2" cellpadding="0">
+          <tr>
+            <td width="20" align="left" valign="middle"></td>
+            <td width="301"><span class="xxxNew">
+              <?=$plan2['month_amount']?>
+              </span><span class="xx">
+              <?=$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name');?>
+              </span> <span class="x">
+              <?=$parObj->_getLabenames($arrayDataOffer,'newForTxt','name');?>
+              </span> <span class="xxxxNew"> 2
+              <?=$parObj->_getLabenames($arrayDataOffer,'newMonthsTxt','name');?>
+              </span><br />
+              <div class="paymentDesc">
+                <?=$parObj->_getLabenames($arrayDataOffer,'invoicedetails3','name')." ".$plan2['plan_amount']." ".$parObj->_getLabenames($arrayDataOffer,'currency','name');?>
+              </div></td>
+          </tr>
+        </table>
+        <div class="discount_2"><strong>-<?=$plan2['plan_discount']?>%</strong><br />
+          <span class="oferText">
+          <?=$parObj->_getLabenames($arrayDataOffer,'newOfferCapt','name');?>
+          </span> </div>
+      </li>
+      <?php }
+		  if(sizeof($plan1) > 0){?>
+      <li class="blue">
+        <div class="corner"></div>
+        <div class="corner-rit"></div>
+        <table width="378" border="0" cellspacing="2" cellpadding="0">
+          <tr>
+            <td width="20" align="left" valign="middle"></td>
+            <td width="348"><span class="xxxNew">
+              <?=$parObj->_getLabenames($arrayDataOffer,'offer4','name');?>
+              (
+              <?=$parObj->_getLabenames($arrayData_new1,'planNewTxt','name');?>
+              ):</span> <span class="x" id="xAmt">
+              <?=$plan1['month_amount'];?>
+              </span><span class="xxxxNew">
+              <?=$parObj->_getLabenames($arrayDataOffer,'newCurrencyTxt','name');?>
+              /
+              <?=$parObj->_getLabenames($arrayDataOffer,'newMonthsTxt','name');?>
+              </span><br/>
+              <div class="paymentDesc" style="display:none;">
+                <?=$parObj->_getLabenames($arrayDataOffer,'invoicedetails1','name')." ".$plan1['plan_amount']." ".$parObj->_getLabenames($arrayDataOffer,'currency','name');?>
+              </div></td>
+          </tr>
+        </table>
+      </li>
+      <?php }?>
+    </ul>
+    <?php
+	}?>
+    <!--<p align="center"><a href="<?=ROOT_JWPATH?>userreg1.php" class="large"><?=$parObj->
+    _getLabenames($arrayDataOffer,'newSignOfferTxt','name');?> </a>
+    </p>
+    --></div>
+  <div>
+    <div class="right">
+      <div class="voucher">&nbsp;</div>
+      <h2>
+        <?=$parObj->_getLabenames($arrayDataOffer,'newMoreGftTxt','name');?>
+        .</h2>
+      <p>
+        <?=$parObj->_getLabenames($arrayDataOffer,'newMoreGftDesc1Txt','name');?>
+        .<br />
+        <?=$parObj->_getLabenames($arrayDataOffer,'newMoreGftDesc2Txt','name');?>
+        <br />
+        <?=$parObj->_getLabenames($arrayDataOffer,'newMoreGftDesc3Txt','name');?>
+        . </p>
+      <a href="<?=ROOT_JWPATH?>giftreg.php" class="button-4">
+      <?=$parObj->_getLabenames($arrayDataOffer,'newMoreGftDesc4Txt','name');?>
+      </a> <br />
+      <br />
+      <?php
+			if($lanId != 5)
+			{?>
+      <div class="regulations"> <b>
+        <?=$parObj->_getLabenames($arrayDataOffer,'newBtmTxtHead','name');?>: </b><br  />
+        <br />
+        <?=$parObj->_getLabenames($arrayDataOffer,'newBtmTxt','name');?>
+        . </div>
+      <?php
+			}?>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>

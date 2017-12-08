@@ -1,0 +1,28 @@
+  <html>
+    <style>
+ 
+.dropdown {
+padding: 4px 0 3px 3px;
+height: auto;
+width: 299px;
+border: solid 1px #e0e0e0;
+background: url(images/blue_drop.png) no-repeat;
+background-position: 275px 6px; /*Position of the arrow-image*/
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+-webkit-appearance: none; /* Removes default chrome and safari style*/
+-moz-appearance: none; /* Removes default Firefox style*/
+text-indent: 0.01px; /* Removes default arrow from firefox*/
+text-overflow: ""; /* Removes default arrow from firefox*/
+}
+
+.dropdown::-ms-expand { /* Removes Default IE style*/
+display: none;
+}
+     </style>
+     <body>  
+	    <div class="styled-select">
+        <select class="dropdown"><option>Here is the first option</option><option>The second option</option></select>
+     </body>
+</html>

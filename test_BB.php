@@ -1,0 +1,119 @@
+<?php
+//echo phpinfo();die;
+function register_forum($userDetails)
+{
+	error_reporting(1);
+	error_reporting(E_ALL ^ E_NOTICE);
+//To register the userdetails to forum
+
+  define('IN_PHPBB', true);
+  /* set scope for variables required later */
+  global $phpbb_root_path;
+  global $phpEx;
+  global $db;
+  global $config;
+  global $user;
+  global $auth;
+  global $cache;
+  global $template;
+
+  # your php extension
+  $phpEx = substr(strrchr(__FILE__, '.'), 1);
+  //$phpbb_root_path = "/home/sites_web/client/newdesign.back/forum/";
+  $phpbb_root_path = '/var/www/html/jiwokv3/forum/';
+  //$phpbb_root_path = "forum/";
+
+/* includes all the libraries etc. required */
+	require($phpbb_root_path ."common.php");
+	require($phpbb_root_path ."includes/functions_user.php");
+	include_once $phpbb_root_path ."includes/utf/utf_tools.php";	
+	include_once $phpbb_root_path ."includes/functions.php";
+	include_once $phpbb_root_path ."includes/auth.php";
+	
+	/*$username 	= "satewqeqwewqe12134";
+	if(!isset($_POST['password']))
+		$password 		= 	"apssword";
+	else
+		$password 		= 	@$_POST['password'];
+		
+	$email		 	= "123sas@pass.com";
+	*/
+	// timezone of the user... Based on GMT in the format of '-6', '-4', 3, 9 etc...
+	$timezone = '8';
+	
+	// I’ll use the following...
+	$user_actkey = md5(rand(0, 100) . time());
+	$user_actkey = substr($user_actkey, 0, rand(8, 12));
+	
+	// IP address of the user stored in the Data base.
+	$user_ip = $user->ip;
+	
+	// registration time of the user, timestamp format.
+	$registration_time = time();
+	
+	// time since the user is inactive. timestamp.
+	$user_inactive_time = time();
+	# Hash the password  
+	$UserPass = phpbb_hash(base64_decode($userDetails['user_password']));
+	
+	# get Ipaddress
+	 
+	$Ipaddress = $_SERVER['REMOTE_ADDR'];
+	
+	# The Parameters to be passed 
+	$Postarr = array( "username"=>$userDetails['user_email'],"user_password"=>$UserPass,"user_email"=>$userDetails['user_email'],"group_id"=>2,"user_timezone"=>"0","user_dst"=>"0","user_lang"=>"en","user_actkey"=>$user_actkey,"user_ip"=>$Ipaddress,"user_regdate"=>time(),"user_inactive_reason"=>"0","user_inactive_time"=>$user_inactive_time,"user_type"=>"0");
+	# Register user ....
+
+	$user_id = SaveuserDetailstophpbb($Postarr);
+	//$user_id = user_add($user_row);
+	$user->session_begin();	
+	# Login to PHPBB Forum automatically when a user trying to login to the site
+	// $auth->login($userDetails['user_email'], $userDetails['user_password'], 'false', 1, 0);
+	 
+	 
+	//Forum login --- added by Jitha
+	 $sqlForum	=	"SELECT * 
+		FROM `forum_users` 
+		WHERE `username`= '".$userDetails['user_email']."'"; 
+	$resForum 	=	 mysql_query($sqlForum);
+	$res	=	mysql_fetch_row($resForum);
+	
+	//$phpbb_root_path = "/home/sites_web/client/forum.jiwok.com/";
+	//	$auth	=	new auth();
+	# Login to PHPBB Forum automatically when a user trying to login to the site
+	$result 							= 	$user->session_create($res[0]);
+	$_SESSION['forum_userId']			=	$res[0];
+	$_SESSION['jiwokforum']['email'] 	= 	$res[12];
+	$_SESSION['jiwokforum']['user'] 	= 	$res[12];
+
+	//Forum login --- added by Jitha
+}
+	
+//To clear the forum session while logout
+function logout() 
+{
+  define('IN_PHPBB', true);
+
+    global $phpbb_root_path;
+	global $phpEx;
+	global $db;
+	global $config;
+	global $user;
+	global $auth;
+	global $cache;
+	global $template;
+	global $db, $lang, $board_config;
+	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
+	
+	$phpEx = substr(strrchr(__FILE__, '.'), 1);
+  	$phpbb_root_path = "/home/sites_web/client/newdesign.back/forum/";
+	//$phpbb_root_path = "forum/";
+	require($phpbb_root_path ."common.php");
+	require($phpbb_root_path ."includes/functions_user.php");
+
+	$user->session_kill();
+	unset($_SESSION['jiwokforum']);
+
+}
+
+?>

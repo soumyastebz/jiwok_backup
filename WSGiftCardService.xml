@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="urn:giftcard.decathlon.com" xmlns:tns3="http://exception.ws.fwk.decathlon.com" xmlns:impl="urn:giftcard.decathlon.com" xmlns:intf="urn:giftcard.decathlon.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns2="http://data.webservices.giftcard.decathlon.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <schema elementFormDefault="qualified" targetNamespace="urn:giftcard.decathlon.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://exception.ws.fwk.decathlon.com"/>
+   <import namespace="http://data.webservices.giftcard.decathlon.com"/>
+   <element name="requestGiftCards">
+    <complexType>
+     <sequence>
+      <element name="requestGiftCards" type="tns2:VoRequestGiftCards"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="requestGiftCardsResponse">
+    <complexType>
+     <sequence>
+      <element name="requestGiftCardsReturn" type="tns2:VoGiftCards"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ArrayOf_tns2_VoGiftCard">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns2:VoGiftCard"/>
+    </sequence>
+   </complexType>
+   <element name="fault" type="tns3:WSBusinessException"/>
+   <element name="getInfoPromo">
+    <complexType>
+     <sequence>
+      <element name="infoPromoRequest" type="tns2:VoInfoPromo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getInfoPromoResponse">
+    <complexType>
+     <sequence>
+      <element name="infoPromoReturn" type="tns2:VoInfoPromo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ArrayOf_tns2_VoInfoPromo">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns2:VoInfoPromo"/>
+    </sequence>
+   </complexType>
+      <element name="getBatchStatus">
+    <complexType>
+     <sequence>
+      <element name="batchStatus" type="tns2:VoBatchStatus"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getBatchStatusResponse">
+    <complexType>
+     <sequence>
+      <element name="batchStatusReturn" type="tns2:VoBatchStatus"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ArrayOf_tns2_VoBatchStatusDetail">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns2:VoBatchStatusDetail"/>
+    </sequence>
+   </complexType>
+   <element name="requestBatch">
+    <complexType>
+     <sequence>
+      <element name="requestBatch" type="tns2:VoRequestBatch"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ArrayOf_tns2_VoRequestBatchDetail">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns2:VoRequestBatchDetail"/>
+    </sequence>
+   </complexType>
+   <element name="requestBatchResponse">
+    <complexType>
+     <sequence>
+      <element name="requestBatchReturn" type="tns2:VoRequestBatchResult"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="actionOnGiftCard">
+    <complexType>
+     <sequence>
+      <element name="actionOnGiftCard" type="tns2:VoActionOnGiftCard"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="actionOnGiftCardResponse">
+    <complexType>
+     <sequence>
+      <element name="actionOnGiftCardReturn" type="tns2:VoActionOnGiftCardResult"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getGiftcardHistory">
+    <complexType>
+     <sequence>
+      <element name="voGiftCardHistoryRequest" type="tns2:VoGiftCardHistoryRequest"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getGiftcardHistoryResponse">
+    <complexType>
+     <sequence>
+      <element name="getGiftcardHistoryReturn" type="tns2:VoGiftCardHistory"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ArrayOf_tns2_VoGiftCardHistoryDetail">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns2:VoGiftCardHistoryDetail"/>
+    </sequence>
+   </complexType>
+   <element name="pingOperation">
+    <complexType>
+     <sequence>
+      <element name="operation" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="pingOperationResponse">
+    <complexType>
+     <sequence>
+      <element name="pingOperationReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+    <schema elementFormDefault="qualified" targetNamespace="http://data.webservices.giftcard.decathlon.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="urn:giftcard.decathlon.com"/>
+   <import namespace="http://exception.ws.fwk.decathlon.com"/>
+   <complexType name="VoRequestGiftCards">
+    <sequence>
+     <element name="author" nillable="true" type="xsd:string"/>
+     <element name="freeLabelReference" nillable="true" type="xsd:string"/>
+     <element name="promoCode" nillable="true" type="xsd:string"/>
+     <element name="quantity" nillable="true" type="xsd:int"/>
+     <element name="reference" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoGiftCard">
+    <sequence>
+     <element name="amount" nillable="true" type="xsd:long"/>
+     <element name="giftCardNumber" nillable="true" type="xsd:long"/>
+     <element name="autorisationNumber" nillable="true" type="xsd:int"/>
+     <element name="eanCode" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoGiftCards">
+    <sequence>
+     <element name="giftCards" nillable="true" type="impl:ArrayOf_tns2_VoGiftCard"/>
+     <element name="requestDate" nillable="true" type="xsd:dateTime"/>
+     <element name="requestNumber" nillable="true" type="xsd:int"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoRequestBatchDetail">
+    <sequence>
+     <element name="activationDate" nillable="true" type="xsd:dateTime"/>
+     <element name="amount" nillable="true" type="xsd:long"/>
+     <element name="cardNumber" nillable="true" type="xsd:long"/>
+     <element name="cashierNumber" nillable="true" type="xsd:int"/>
+     <element name="currency" nillable="true" type="xsd:string"/>
+     <element name="expirationDate" nillable="true" type="xsd:dateTime"/>
+     <element name="freeField1" nillable="true" type="xsd:string"/>
+     <element name="freeField2" nillable="true" type="xsd:string"/>
+     <element name="sign" nillable="true" type="xsd:string"/>
+     <element name="storeNumber" nillable="true" type="xsd:int"/>
+     <element name="tillNumber" nillable="true" type="xsd:int"/>
+     <element name="transactionNumber" nillable="true" type="xsd:int"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoInfoPromo">
+        <sequence>
+            <element name="amountMax" nillable="true" type="xsd:double"/>
+            <element name="amountMin" nillable="true" type="xsd:double"/>
+            <element name="cardType" nillable="true" type="xsd:string"/>
+            <element name="code" nillable="true" type="xsd:string"/>
+            <element name="consortiumId" nillable="true" type="xsd:long"/>
+            <element name="consortiumName" nillable="true" type="xsd:string"/>
+            <element name="creationDate" nillable="true" type="xsd:dateTime"/>
+            <element name="currencyCode" nillable="true" type="xsd:string"/>
+            <element name="email1" nillable="true" type="xsd:string"/>
+            <element name="email2" nillable="true" type="xsd:string"/>
+            <element name="expirationDate" nillable="true" type="xsd:dateTime"/>
+            <element name="itemCode" nillable="true" type="xsd:string"/>
+            <element name="maxActivationsNumber" nillable="true" type="xsd:int"/>
+            <element name="name" nillable="true" type="xsd:string"/>
+            <element name="serialVersionUID" type="xsd:long"/>
+            <element name="supportPaiementCode" nillable="true" type="xsd:long"/>
+            <element name="useTank" nillable="true" type="xsd:string"/>
+            <element name="validityPeriod" nillable="true" type="xsd:int"/>
+        </sequence>
+    </complexType>
+    <complexType name="VoBatchStatus">
+    <sequence>
+     <element name="requestNumber" nillable="true" type="xsd:long"/>
+     <element name="merchantId" nillable="true" type="xsd:string"/>
+     <element name="merchantType" nillable="true" type="xsd:string"/>
+     <element name="requestCode" nillable="true" type="xsd:string"/>
+     <element name="requestDate" nillable="true" type="xsd:dateTime"/>
+     <element name="appCode" nillable="true" type="xsd:string"/>
+     <element name="login" nillable="true" type="xsd:string"/>
+     <element name="answerDate" nillable="true" type="xsd:dateTime"/>
+     <element name="sendingDate" nillable="true" type="xsd:dateTime"/>
+     <element name="reference" nillable="true" type="xsd:string"/>
+     <element name="freeLabelRefer" nillable="true" type="xsd:string"/>
+     <element name="batchStatus" nillable="true" type="xsd:string"/>
+     <element name="batchType" nillable="true" type="xsd:string"/>
+     <element name="batchStatusDetails" nillable="true" type="impl:ArrayOf_tns2_VoBatchStatusDetail"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoBatchStatusDetail">
+    <sequence>
+     <element name="requestNumber" nillable="true" type="xsd:long"/>
+     <element name="cardNumber" nillable="true" type="xsd:string"/>
+     <element name="responseCode" nillable="true" type="xsd:long"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoRequestBatch">
+    <sequence>
+     <element name="author" nillable="true" type="xsd:string"/>
+     <element name="freeLabelReference" nillable="true" type="xsd:string"/>
+     <element name="merchantId" nillable="true" type="xsd:string"/>
+     <element name="reference" nillable="true" type="xsd:int"/>
+     <element name="requestBatchDetails" nillable="true" type="impl:ArrayOf_tns2_VoRequestBatchDetail"/>
+     <element name="requestCode" nillable="true" type="xsd:string"/>
+     <element name="requestDate" nillable="true" type="xsd:dateTime"/>
+     <element name="requestNumber" nillable="true" type="xsd:int"/>
+     <element name="status" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoRequestBatchResult">
+    <sequence>
+     <element name="requestNumber" nillable="true" type="xsd:int"/>
+     <element name="status" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoActionOnGiftCard">
+    <sequence>
+     <element name="amount" nillable="true" type="xsd:long"/>
+     <element name="cardNumber" nillable="true" type="xsd:long"/>
+     <element name="cardType" nillable="true" type="xsd:string"/>
+     <element name="cashierNumber" nillable="true" type="xsd:int"/>
+     <element name="currency" nillable="true" type="xsd:string"/>
+     <element name="futureActivationDate" nillable="true" type="xsd:dateTime"/>
+     <element name="language" nillable="true" type="xsd:string"/>
+     <element name="merchantId" nillable="true" type="xsd:string"/>
+     <element name="requestCode" nillable="true" type="xsd:string"/>
+     <element name="subThirdNumber" nillable="true" type="xsd:int"/>
+     <element name="thirdNumber" nillable="true" type="xsd:int"/>
+     <element name="thirdTypeNumber" nillable="true" type="xsd:int"/>
+     <element name="tillNumber" nillable="true" type="xsd:int"/>
+     <element name="transactionNumber" nillable="true" type="xsd:long"/>
+     <element name="autorisationNumber" nillable="true" type="xsd:int"/>
+     <element name="eanCode" nillable="true" type="xsd:string"/>
+     <element name="promoCode" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoActionOnGiftCardResult">
+    <sequence>
+     <element name="autorisationNumber" nillable="true" type="xsd:int"/>
+     <element name="status" nillable="true" type="xsd:int"/>
+     <element name="statusLabel" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoGiftCardHistoryRequest">
+    <sequence>
+     <element name="cardNumber" nillable="true" type="xsd:long"/>
+     <element name="currency" nillable="true" type="xsd:string"/>
+     <element name="language" nillable="true" type="xsd:string"/>
+     <element name="merchantId" nillable="true" type="xsd:string"/>
+     <element name="subThirdNumber" nillable="true" type="xsd:int"/>
+     <element name="thirdNumber" nillable="true" type="xsd:int"/>
+     <element name="thirdTypeNumber" nillable="true" type="xsd:int"/>
+     <element name="eanCode" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoGiftCardHistoryDetail">
+    <sequence>
+     <element name="amount" nillable="true" type="xsd:long"/>
+     <element name="currency" nillable="true" type="xsd:int"/>
+     <element name="currencyDisplayCode" nillable="true" type="xsd:string"/>
+     <element name="store" nillable="true" type="xsd:string"/>
+     <element name="storeNumber" nillable="true" type="xsd:int"/>
+     <element name="transactionDate" nillable="true" type="xsd:dateTime"/>
+     <element name="transactionType" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="VoGiftCardHistory">
+    <sequence>
+     <element name="balance" nillable="true" type="xsd:double"/>
+     <element name="cardNumber" nillable="true" type="xsd:long"/>
+     <element name="currency" nillable="true" type="xsd:int"/>
+     <element name="currencyDisplayCode" nillable="true" type="xsd:string"/>
+     <element name="expiryDate" nillable="true" type="xsd:dateTime"/>
+     <element name="responseDetail" nillable="true" type="impl:ArrayOf_tns2_VoGiftCardHistoryDetail"/>
+     <element name="status" nillable="true" type="xsd:int"/>
+     <element name="statusLabel" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+    <schema elementFormDefault="qualified" targetNamespace="http://exception.ws.fwk.decathlon.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="urn:giftcard.decathlon.com"/>
+   <import namespace="http://data.webservices.giftcard.decathlon.com"/>
+   <complexType name="WSBusinessException">
+    <sequence>
+     <element name="errorCode" nillable="true" type="xsd:int"/>
+     <element name="exceptionDate" nillable="true" type="xsd:dateTime"/>
+     <element name="exceptionMessage" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+  </wsdl:types>
+  <wsdl:message name="requestGiftCardsRequest">
+    <wsdl:part name="parameters" element="impl:requestGiftCards">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="requestBatchRequest">
+    <wsdl:part name="parameters" element="impl:requestBatch">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="requestGiftCardsResponse">
+    <wsdl:part name="parameters" element="impl:requestGiftCardsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getGiftcardHistoryResponse">
+    <wsdl:part name="parameters" element="impl:getGiftcardHistoryResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="actionOnGiftCardRequest">
+    <wsdl:part name="parameters" element="impl:actionOnGiftCard">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="pingOperationRequest">
+    <wsdl:part name="parameters" element="impl:pingOperation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getGiftcardHistoryRequest">
+    <wsdl:part name="parameters" element="impl:getGiftcardHistory">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="requestBatchResponse">
+    <wsdl:part name="parameters" element="impl:requestBatchResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="WSBusinessException">
+    <wsdl:part name="fault" element="impl:fault">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="actionOnGiftCardResponse">
+    <wsdl:part name="parameters" element="impl:actionOnGiftCardResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBatchStatusErrorResponse">
+    <wsdl:part name="parameters" element="impl:getBatchStatusResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInfoPromoRequest">
+    <wsdl:part name="parameters" element="impl:getInfoPromo">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInfoPromoResponse">
+    <wsdl:part name="parameters" element="impl:getInfoPromoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBatchStatusErrorRequest">
+    <wsdl:part name="parameters" element="impl:getBatchStatus">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="pingOperationResponse">
+    <wsdl:part name="parameters" element="impl:pingOperationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="WSGiftCard">
+    <wsdl:operation name="requestGiftCards">
+      <wsdl:input name="requestGiftCardsRequest" message="impl:requestGiftCardsRequest">
+    </wsdl:input>
+      <wsdl:output name="requestGiftCardsResponse" message="impl:requestGiftCardsResponse">
+    </wsdl:output>
+      <wsdl:fault name="WSBusinessException" message="impl:WSBusinessException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="requestBatch">
+      <wsdl:input name="requestBatchRequest" message="impl:requestBatchRequest">
+    </wsdl:input>
+      <wsdl:output name="requestBatchResponse" message="impl:requestBatchResponse">
+    </wsdl:output>
+      <wsdl:fault name="WSBusinessException" message="impl:WSBusinessException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getBatchStatusError">
+      <wsdl:input name="getBatchStatusErrorRequest" message="impl:getBatchStatusErrorRequest">
+    </wsdl:input>
+      <wsdl:output name="getBatchStatusErrorResponse" message="impl:getBatchStatusErrorResponse">
+    </wsdl:output>
+      <wsdl:fault name="WSBusinessException" message="impl:WSBusinessException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInfoPromo">
+      <wsdl:input name="getInfoPromoRequest" message="impl:getInfoPromoRequest">
+    </wsdl:input>
+      <wsdl:output name="getInfoPromoResponse" message="impl:getInfoPromoResponse">
+    </wsdl:output>
+      <wsdl:fault name="WSBusinessException" message="impl:WSBusinessException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="actionOnGiftCard">
+      <wsdl:input name="actionOnGiftCardRequest" message="impl:actionOnGiftCardRequest">
+    </wsdl:input>
+      <wsdl:output name="actionOnGiftCardResponse" message="impl:actionOnGiftCardResponse">
+    </wsdl:output>
+      <wsdl:fault name="WSBusinessException" message="impl:WSBusinessException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getGiftcardHistory">
+      <wsdl:input name="getGiftcardHistoryRequest" message="impl:getGiftcardHistoryRequest">
+    </wsdl:input>
+      <wsdl:output name="getGiftcardHistoryResponse" message="impl:getGiftcardHistoryResponse">
+    </wsdl:output>
+      <wsdl:fault name="WSBusinessException" message="impl:WSBusinessException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="pingOperation">
+      <wsdl:input name="pingOperationRequest" message="impl:pingOperationRequest">
+    </wsdl:input>
+      <wsdl:output name="pingOperationResponse" message="impl:pingOperationResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSGiftCardSoapBinding" type="impl:WSGiftCard">
+    <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="requestGiftCards">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="requestGiftCardsRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="requestGiftCardsResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSBusinessException">
+        <wsdlsoap:fault name="WSBusinessException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="requestBatch">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="requestBatchRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="requestBatchResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSBusinessException">
+        <wsdlsoap:fault name="WSBusinessException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getBatchStatusError">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getBatchStatusErrorRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getBatchStatusErrorResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSBusinessException">
+        <wsdlsoap:fault name="WSBusinessException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInfoPromo">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getInfoPromoRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getInfoPromoResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSBusinessException">
+        <wsdlsoap:fault name="WSBusinessException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="actionOnGiftCard">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="actionOnGiftCardRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="actionOnGiftCardResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSBusinessException">
+        <wsdlsoap:fault name="WSBusinessException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getGiftcardHistory">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getGiftcardHistoryRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getGiftcardHistoryResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSBusinessException">
+        <wsdlsoap:fault name="WSBusinessException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="pingOperation">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="pingOperationRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="pingOperationResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WSGiftCardService">
+    <wsdl:port name="WSGiftCard" binding="impl:WSGiftCardSoapBinding">
+      <wsdlsoap:address location="https://id.oxylane.com/wsdispatcher/dispatch.ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
