@@ -1,0 +1,33 @@
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700); /*font-family: 'Montserrat(OTT)', sans-serif;*/
+/*-------------------RESET-------------------*/
+/*-------------------TYPOGRAPHY-------------------*/
+
+
+
+#calendar td{}
+#calback            { width:100%; }
+#calendar           { width:100%;height:100%; background:#3598db;max-width:400px; padding:5px;text-align:center; margin:0 auto}
+.cal                { width:100%;}
+.calhead            { width:100%;height:34px;font-weight:700;font-size:16.12px;}
+.calhead td         { color:#f5d03e;}
+.calheadMonth       { height:18px;padding:0;text-align:center;}
+.calhead img        { border:none;}
+.dayhead            { height:20px;font-size:10px;}
+.dayhead td         { text-align:center;font-size:13.82px;color:#158CD4; color:#aed2ea; padding:5px 0}
+.dayrow{}
+.dayrow td          { border:2px solid #3598db;width: 14.28%;}
+.day                {color:#2a7fba; background:#d7eaf9;}
+.day_Orange1        { color:#fff;background:url(../calander_images/blu_bgselect.png) no-repeat 0 5px;cursor:pointer;margin-left:5px;}
+.day_ylw1           { color:#fff;background:url(../calander_images/ylw_bgselect.png) no-repeat 0 5px;cursor:pointer;margin-left:5px;}
+.day_Orange1today   { color:#fff;margin-left:5px;background:url(../calander_images/ylw_bg.png) no-repeat 0 5px;cursor:pointer;}
+.day_Orange2        { color:#fff;background:url(../calander_images/blu_bg.png) no-repeat 0 5px;cursor:pointer;margin-left:5px;}
+.day_Tick           { background:url("../calander_images/ylw_bg-ticked.png") no-repeat scroll 0 0 transparent;color:#FFFFFF;cursor:pointer;}
+.day_Today          { color:#fff;margin-left:5px;background:url(../calander_images/ylw_bg.png) no-repeat 0 5px;cursor:pointer;}
+.today_day          { color:#f5d03e;background:#40af49;}
+.today_day b        { display:block; padding:10px 0 0 0}
+
+.dayover{}
+.dayout{}
+.clnd-hed          { height:37px; border-bottom:2px solid #f57c00}
+
+.today_day,.today_day,.day,.day_Orange1today,.day_Orange1today,.day_Orange2     {height:54px;text-align:center;padding: 0;}

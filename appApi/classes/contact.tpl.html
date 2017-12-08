@@ -1,0 +1,199 @@
+{call_header}
+{assign var="actionReturn" value=$obj->actionReturn}
+{literal}
+
+
+<!-- Google Maps API --> 
+
+<!-- <script src="https://maps.googleapis.com/maps/api/js"></script>  -->
+<script>
+ /*   function initialize() {
+        var mapOptions = {
+            center: new google.maps.LatLng(52.471616,-2.039895),
+            zoom: 13,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(document.getElementById("map_area"), mapOptions);
+
+        var point = new google.maps.LatLng(52.471616,-2.039895);
+
+        var marker = new google.maps.Marker({
+            position: point,
+            map: map,
+            title: "48-50 St john Street Birmingham, UK"
+        });
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+    */
+
+//     $(document).ready(function() {
+// //change CAPTCHA on each click or on refreshing page
+// $("#reload").click(function() {
+
+//     $("img#img").remove();
+//     var id = Math.random();
+//     $('<img id="img" src="captcha.php?id='+id+'"/>').appendTo("#imgdiv");
+//     id ='';
+// });
+
+
+
+function validate(){
+
+  if (document.getElementById("name").value==""){
+    alert("Please enter your name");
+    return false;
+  }
+  else if(!isNaN(document.getElementById("name").value)){
+    alert("Please enter only letters in name field");
+    return false;
+  }
+  if (document.getElementById("num").value==""){
+    alert("Please enter your Contact Number");
+    return false;
+  }
+  if (isNaN(document.getElementById("num").value)){
+    alert("Please enter Valid Contact Number");
+    return false;
+  }
+  if (document.getElementById("email").value==""){
+    alert("Please enter your email");
+    return false;
+  }
+  var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+  if(!re.test(document.myform.email.value))
+  {
+    alert("Please enter valid Email Address");
+    return false;
+  }
+  if (document.getElementById("comment").value.trim()==""){
+    alert("Please enter Message");
+    return false;
+  }
+
+  if ($('#captcha-form').val()==""){
+    alert("Please enter Captcha");
+    return false;
+  }
+
+  else{
+    var captchaValue = $('#captcha-form').val()
+    var isCaptchaMatched = false;
+
+    $.ajax({
+      'url': 'contact.php?actionvar=Captcha&captcha='+captchaValue,
+      'type' : 'GET',
+      'dataType': 'json',
+      'async': false,
+      success : function(response){
+        if(response.status == 'success'){
+          isCaptchaMatched = true;
+          // $('#myform').submit();
+        }else{
+          alert("Captcha not matching");
+        }
+      },
+      error : function(resp){
+       console.log("error");
+       console.log("resp : "+ resp);        
+
+       return false;
+     }
+   });
+    if(!isCaptchaMatched){
+     return false;
+   }
+
+ } 
+
+
+
+}
+
+// }):
+
+</script>
+
+
+{/literal}
+
+<section class="heading">
+
+  <div class="container">
+    <div class="col-md-12">
+      <h1>Contact Us</h1>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="adress-dtls">
+  <div class="container">
+    <div class="row">
+
+
+
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="feedback">
+          <h2>Feedback & Other Enquiries</h2>
+                         <!-- <p>You are important to us and we are continuously improving to serve you better. If you have any enquiries or feedback about our services, please let us know so that we can assist you.
+                       </p>-->                     
+                       <p>You are important to us and we are continuously improving to serve you better. If you have any enquiries or feedback about our services, please let send an email to info@mskradiology4u.co.uk, so that we can assist you.
+                       </p>
+                     </div>
+                   </div>
+                 </div>
+                 <div class="row c-form">
+                  <form action="" name="myform" id="myform" method="post" enctype="multipart/form-data">
+                   <div class="col-md-4">
+                    <fieldset class="form-group">
+                      <label class="f-name" for="formGroupExampleInput">Name<font color="red">*</font></label>
+                      <input type="text" class="form-control locationform" name="name" id="name" placeholder="name">
+                    </fieldset>
+                    <fieldset class="form-group">
+                      <label class="f-name" for="formGroupExampleInput2">Contact No.<font color="red">*</font></label>
+                      <input type="text" class="form-control locationform" name="num" id="num" placeholder="contact number">
+                    </fieldset>
+                    <fieldset class="form-group">
+                      <label class="f-name" for="formGroupExampleInput2">Email<font color="red">*</font></label>
+                      <input type="text" class="form-control locationform" name="email" id="email" placeholder="Email">
+                    </fieldset>
+                  </div>
+                  <div class="col-md-4 col-md-offset-1">
+                   <div class="form-group">
+                    <label class="f-name" for="comment">Comment:<font color="red">*</font></label>
+                    <textarea class="form-control locationform" rows="10" name="comment" id="comment"></textarea>
+                  </div>
+
+                  <input name="captcha" id="captcha-form" type="text"   placeholder="Enter captcha" class="tfl locationform" value="" >
+                  <div class="KPcha"><img src="libs/gcaptcha/captcha.php" id="captcha" alt="captcha"/></div>
+                  <div style="text-align:right;"><a href="javascript:void(0)" onClick="
+                    document.getElementById('captcha').src='libs/gcaptcha/captcha.php?'+Math.random();
+                    document.getElementById('captcha-form').focus();"
+                    id="change-image">
+
+                    Can't read ?&nbsp;&nbsp;<img src="{$smarty.const.CONST_SITE_ADDRESS}images/refresh.png" align="Refresh" title="Refresh Captcha">
+                  </a>
+                </div>
+
+                <button type="submit" class="btn btn-loc btn-default" valcheck="true" name="actionvar" value="SUBMIT" id="saveDataId" onclick="return validate();" >Submit</button>
+              </div>
+            </form>
+          </div>          
+
+        </div>
+      </div>
+
+
+
+
+
+
+    </section>
+
+    {call_footer}

@@ -1,0 +1,82 @@
+edit categories >>>>2
+SimpleXMLElement Object
+(
+    [@attributes] => Array
+        (
+            [id] => 1
+            [status] => 1
+            [english_status] => 1
+        )
+
+    [English] => Run Faster
+    [SEOEnglish] => SimpleXMLElement Object
+        (
+            [@attributes] => Array
+                (
+                    [desc] => 
+                )
+
+        )
+
+    [French] => Courir plus vite
+    [SEOFrench] => Courir plus vite et amÃÂ©liorer sa VMA avec ces programmes
+    [Spanish] => Correr mÃÂ¡s rÃÂ¡pido
+    [SEOSpanish] => SimpleXMLElement Object
+        (
+            [@attributes] => Array
+                (
+                    [desc] => 
+                )
+
+        )
+
+    [Italian] => SimpleXMLElement Object
+        (
+            [@attributes] => Array
+                (
+                    [id] => 4
+                    [desc] => 
+                    [status] => 1
+                    [engStatus] => 1
+                )
+
+        )
+
+    [SEOItalian] => SimpleXMLElement Object
+        (
+            [@attributes] => Array
+                (
+                    [desc] => 
+                )
+
+        )
+
+    [Polish] => ChcÃÂ biegaÃÂ szybciej!
+    [SEOPolish] => SimpleXMLElement Object
+        (
+            [@attributes] => Array
+                (
+                    [desc] => 
+                )
+
+        )
+
+    [subcategories] => SimpleXMLElement Object
+        (
+        )
+
+)
+
+pppppppppppp<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?><cat id="1" status="1" english_status="1">
+  <English id="1" desc="" status="1" engStatus="1">Run Faster</English>
+  <SEOEnglish desc=""/>
+  <French id="2" desc="&amp;lt;DIV STYLE=&quot;text-align:LEFT;&quot;&amp;gt;&amp;lt;FONT STYLE=&quot;letter-spacing:0px;color:#0B333C;font-size:10px;font-family:'Verdana';&quot;&amp;gt;Jiwok vous propose des&amp;lt;B&amp;gt; plans d'entrainement pour courir plus vite&amp;lt;/B&amp;gt;. Avec ces entrainements &amp;lt;B&amp;gt;courir plus vite&amp;lt;/B&amp;gt;, vous pourrez amÃ©liorer votre vitesse et votre &amp;lt;B&amp;gt;Vma&amp;lt;/B&amp;gt;. Tout nos plans &amp;lt;B&amp;gt;entrainements courir plus vite&amp;lt;/B&amp;gt; ont Ã©tÃ© rÃ©alisÃ©s par &amp;lt;B&amp;gt;nos coachs professionnels&amp;lt;/B&amp;gt;..&amp;lt;/FONT&amp;gt;&amp;lt;/DIV&amp;gt;" status="1" engStatus="1">Courir plus vite</French>
+  <SEOFrench desc="&amp;lt;DIV STYLE=&quot;text-align:LEFT;&quot;&amp;gt;&amp;lt;FONT STYLE=&quot;letter-spacing:0px;color:#0B333C;font-size:10px;font-family:'Verdana';&quot;&amp;gt;Courez plus vite en amÃ©liorant votre VMA avec ces programmes d'entraÃ®nement de course Jiwok. Fait par des coachs professionnels pour sportif intermÃ©diaire.&amp;lt;/FONT&amp;gt;&amp;lt;/DIV&amp;gt;">Courir plus vite et amÃ©liorer sa VMA avec ces programmes</SEOFrench>
+  <Spanish id="3" desc="&amp;lt;DIV STYLE=&quot;text-align:LEFT;&quot;&amp;gt;&amp;lt;FONT STYLE=&quot;letter-spacing:0px;color:#0B333C;font-size:10px;font-family:'Verdana';&quot;&amp;gt;Jiwok te propone &amp;lt;B&amp;gt;planes de entrenamiento para correr mÃ¡s rÃ¡pido.&amp;lt;/B&amp;gt; Con estos entrenamientos &amp;lt;B&amp;gt;correr mÃ¡s rÃ¡pido&amp;lt;/B&amp;gt;, podrÃ¡s mejorar tu velocidad y tu &amp;lt;B&amp;gt;Vam&amp;lt;/B&amp;gt;. Todos nuestros planes &amp;lt;B&amp;gt;entrenamientos correr mÃ¡s rÃ¡pido &amp;lt;/B&amp;gt;han sido realizados por n&amp;lt;B&amp;gt;uestros entrenadores profesionales.&amp;lt;/B&amp;gt;&amp;lt;/FONT&amp;gt;&amp;lt;/DIV&amp;gt;" status="1" engStatus="1">Correr mÃ¡s rÃ¡pido</Spanish>
+  <SEOSpanish desc=""/>
+  <Italian id="4" desc="" status="1" engStatus="1"/>
+  <SEOItalian desc=""/>
+  <Polish id="5" desc="&amp;lt;DIV STYLE=&quot;text-align:LEFT;&quot;&amp;gt;&amp;lt;FONT STYLE=&quot;letter-spacing:0px;color:#0B333C;font-size:10px;font-family:'Verdana';&quot;&amp;gt;Mamy dla Ciebie plany treningoweÂ majÄce na celu poprawienie Twojej szybkoÅci i dynamiki. DziÄki tym treningom poprawisz swojÄ prÄdkoÅÄ biegowÄ i podniesiesz swÃ³j prÃ³g tlenowy (bÄdziesz zdolny do wiÄkszego wysiÅku).Â &amp;lt;/FONT&amp;gt;&amp;lt;/DIV&amp;gt;" status="1" engStatus="1">ChcÄ biegaÄ szybciej!</Polish>
+  <SEOPolish desc=""/>
+  <subcategories/>
+</cat>
